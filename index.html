@@ -853,8 +853,10 @@
       <div class="contact-grid">
         <ul class="contact-list" data-reveal>
           <!-- The email address is stored ONLY here, split in two. site.js builds the mailto:
-               for every link marked data-mail. Without JS this link goes to GitHub. -->
-          <li class="c-mail"><a href="https://github.com/richardbwang" data-mail data-user="richardbojinwang2008" data-domain="gmail.com" data-mail-label="email me">get in touch</a> <span class="hint" data-mail-hint data-js-text="opens your mail app">via GitHub</span></li>
+               for every link marked data-mail, and writes the visible address + copy button
+               below it. Without JS this link goes to GitHub and no address is shown. -->
+          <li class="c-mail"><a href="https://github.com/richardbwang" data-mail data-user="rbwang" data-domain="usc.edu" data-mail-label="email me">get in touch</a> <span class="hint" data-mail-hint data-js-text="opens your mail app">via GitHub</span>
+            <span class="c-addr" data-mail-addr hidden><span class="c-addr-text" data-mail-text></span> <button type="button" class="linkish" data-copy-mail aria-label="Copy email address">copy</button></span></li>
           <li><a href="https://github.com/richardbwang">github.com/<wbr>richardbwang</a></li>
           <li><a href="https://www.linkedin.com/in/richard-b-wang/">linkedin.com/in/<wbr>richard-b-wang</a></li>
         </ul>

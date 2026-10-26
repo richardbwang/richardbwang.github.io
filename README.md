@@ -618,9 +618,11 @@ flashes faster than 3 times a second.
   still.
 - **Console:** no errors (also from `file://`, where only the YouTube embeds and the star count
   step back to their fallbacks).
-- **Privacy:** no phone number, no school email, no high-school name, no SAT/PSAT, and the email
-  address never written out in any file: `grep -rn --exclude=README.md --exclude-dir=vendor "@gmail" .`
-  finds nothing (this README is excluded only because the command itself contains the pattern;
+- **Privacy:** no phone number, no high-school name, no SAT/PSAT. The contact email (his USC
+  address, the owner's choice for recruiters) is shown on the page and copyable, but it is only
+  ever assembled by site.js from data-user + data-domain, never written out in any file:
+  `grep -rn --exclude=README.md --exclude-dir=vendor "rbwang@" .` finds nothing (this README is
+  excluded only because the command itself contains the pattern;
   `assets/vendor/` because a third-party author's address is in meshopt_decoder's licence header).
 - **Facts:** the robotics totals and the Contact results card agree; the star fallback is
   current; the RW-Template card doesn't claim team adoption numbers (it shows release downloads);

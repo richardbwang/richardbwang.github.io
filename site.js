@@ -140,6 +140,23 @@
       var t = el.getAttribute("data-js-text");
       if (t) el.textContent = t; else el.hidden = true;
     });
+    /* The visible address, for recruiters who'd rather copy it than open a mail app. */
+    var address = mailto.slice(7), addrBox = $("[data-mail-addr]");
+    if (addrBox && window.Promise) {
+      $("[data-mail-text]", addrBox).textContent = address;
+      addrBox.hidden = false;
+      var copyBtn = $("[data-copy-mail]", addrBox), copyTimer = null;
+      if (copyBtn) copyBtn.addEventListener("click", function () {
+        var done = function (msg) {
+          copyBtn.textContent = msg;
+          var live = $("[data-copy-status]");
+          if (live) live.textContent = "Email address " + msg + ".";
+          clearTimeout(copyTimer);
+          copyTimer = setTimeout(function () { copyBtn.textContent = "copy"; }, 1600);
+        };
+        copyText(address).then(function () { done("copied"); }, function () { done("copy failed"); });
+      });
+    }
   }
 
   /* ---------- 3b. Live star count for RW-Template (falls back to the static number) ---------- */
