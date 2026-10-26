@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Richard B. Wang</title>
+  <meta name="description" content="Richard B. Wang: computer science at USC. First author of two IEEE papers on robust robot vision; author of RW-Template, an open-source VEX V5 autonomous framework (1,000+ downloads); VEX World Finalist and #1 in the world in VEX Autonomous Skills.">
+  <meta name="author" content="Richard B. Wang">
+  <link rel="canonical" href="https://richardbwang.github.io/">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0a0a0b">
+
+  <!-- Open Graph / social cards -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://richardbwang.github.io/">
+  <meta property="og:title" content="Richard B. Wang">
+  <meta property="og:description" content="CS at USC. First author of two IEEE papers on robust robot vision; author of RW-Template (open source, 1,000+ downloads); VEX World Finalist and #1 in the world in Autonomous Skills.">
+  <meta property="og:image" content="https://richardbwang.github.io/assets/me.jpg">
+  <meta property="og:image:alt" content="Portrait of Richard B. Wang">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Richard B. Wang">
+  <meta name="twitter:description" content="CS at USC. First author of two IEEE papers on robust robot vision; author of RW-Template (open source, 1,000+ downloads); VEX World Finalist and #1 in the world in Autonomous Skills.">
+  <meta name="twitter:image" content="https://richardbwang.github.io/assets/me.jpg">
+  <meta name="twitter:image:alt" content="Portrait of Richard B. Wang">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <!-- Before first paint. html.js = scripts run; html.anim = motion is allowed, so things that
+       animate in may start hidden (style.css only ever hides them under html.anim).
+       Nothing in the first screen waits for anything: the name, the facts and the links paint at
+       once (the name in a metric-matched stand-in until Archivo arrives; see style.css §1).
+       Failsafes: a script error, or site.js not starting within 1.5 s, removes html.anim and
+       everything shows at once. "Pause motion" (the HUD button) is remembered for the visit. -->
+  <script>
+    (function () {
+      var d = document.documentElement, still = false;
+      d.classList.add("js");
+      try { still = sessionStorage.getItem("rbw-still") === "1"; } catch (e) {}
+      if (still) d.classList.add("still");
+      /* Experience was "Now" (#now) on the previous site: an old link or bookmark to it lands on
+         Experience, and the address reads #experience. (An empty #now at Experience's stage label
+         catches it without JS, and when the hash changes on the page.) */
+      if (location.hash === "#now" && history.replaceState) { try { history.replaceState(history.state, "", "#experience"); } catch (e) {} }
+      /* A deep link (/#papers): the browser's own jump to it is instant (html.deep turns the smooth
+         scroll off), so site.js's second landing corrects it instead of racing it. */
+      if (location.hash.length > 1) d.classList.add("deep");
+      if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) d.classList.add("rm");
+      if (window.matchMedia && !matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
+        d.classList.add("anim");
+        window.addEventListener("error", function () { d.classList.remove("anim"); });
+        setTimeout(function () { if (!window.rbwSite) d.classList.remove("anim"); }, 1500);
+      }
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400;62..125,600;62..125,800&amp;family=Martian+Mono:wdth,wght@75..112.5,400&amp;display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400;62..125,600;62..125,800&amp;family=Martian+Mono:wdth,wght@75..112.5,400&amp;display=swap"></noscript>
+  <link rel="stylesheet" href="style.css">
+  <!-- three.js r170 (vendored, MIT) for the 3D robot in 06: only robot3d.js imports it, and only
+       once stages.js decides to load it (the Robotics opener is near). The map downloads nothing. -->
+  <script type="importmap">{ "imports": { "three": "./assets/vendor/three/build/three.module.min.js", "three/addons/": "./assets/vendor/three/examples/jsm/" } }</script>
+  <script src="site.js" defer></script>
+  <script src="feed.js" defer></script>
+  <script src="stages.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- The false-colour "machine view" used by the hover lens on photos (site.js).
+       Luminance is mapped through the inferno colour ramp. -->
+  <svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <filter id="heat" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="0.30 0.59 0.11 0 0  0.30 0.59 0.11 0 0  0.30 0.59 0.11 0 0  0 0 0 1 0"/>
+      <feComponentTransfer>
+        <feFuncR type="table" tableValues="0 0.086 0.259 0.416 0.576 0.737 0.867 0.953 0.988 0.965 0.988"/>
+        <feFuncG type="table" tableValues="0 0.043 0.039 0.090 0.149 0.216 0.318 0.471 0.647 0.843 1"/>
+        <feFuncB type="table" tableValues="0.016 0.224 0.408 0.431 0.404 0.329 0.227 0.098 0.039 0.275 0.643"/>
+      </feComponentTransfer>
+    </filter>
+  </svg>
+
+  <!-- The viewfinder: fine sensor grain and a soft edge vignette over the whole page. Decorative. -->
+  <div class="vf" aria-hidden="true"></div>
+
+  <!-- ===================================================== HUD (fixed top bar)
+       The mark, the six section links and the motion switch. The feed's live status (REC light,
+       current stage, clock) has ONE home per screen size: in this bar below 1024px, and at the
+       foot of the side rail from 1024px (the bar's copy is hidden there). Phones: the <nav> is
+       pinned to the bottom of the screen, and the stack is an 8-segment strip under this bar. -->
+  <header class="hud">
+    <a class="hud-mark" href="#top" aria-label="RBW, Richard B. Wang, back to top"><b>RBW</b></a>
+    <nav class="hud-nav" aria-label="Sections">
+      <ul>
+        <li><a href="#honors">Honors</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#papers">Papers</a></li>
+        <li><a href="#robotics">Robotics</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <p class="hud-rec" aria-hidden="true"><i class="hud-dot"></i><span class="hud-stage" data-stage-s>00 Raw</span><span class="hud-tc" data-clock>00:00</span></p>
+    <!-- Pauses the decorative motion (hero feed, reveals, simulations, autoplaying clips, clock)
+         for this visit. Its label says what a press does ("Pause motion" / "Resume motion"); both
+         labels sit in one cell, the one that doesn't apply is hidden by CSS from html.still, so
+         the button never changes width and its name always matches what it shows. Its space is
+         kept from the first paint, but it only appears once site.js has wired it (html.motion-ok):
+         never without JS, with reduced motion, or if site.js fails to load. -->
+    <button class="hud-motion" type="button" data-motion><i aria-hidden="true"></i><span class="hm-l"><span class="hm-a">Pause<span class="hm-x"> motion</span></span><span class="hm-b">Resume<span class="hm-x"> motion</span></span></span></button>
+    <ol class="strip" aria-hidden="true"><li data-for="top"></li><li data-for="about"></li><li data-for="honors"></li><li data-for="projects"></li><li data-for="experience"></li><li data-for="papers"></li><li data-for="robotics"></li><li data-for="contact"></li></ol>
+  </header>
+
+  <!-- The perception stack (1024px and up): one segment per stage down the right edge. A stage
+       switches on as you reach its chapter and stays on; the live one fills as you read it.
+       At its foot, the feed's REC light and clock. Decorative. -->
+  <div class="rail" aria-hidden="true">
+    <ol>
+      <li data-for="top"><span>00 Raw</span></li><li data-for="about"><span>01 Cal</span></li><li data-for="honors"><span>02 Det</span></li><li data-for="projects"><span>03 Trk</span></li>
+      <li data-for="experience"><span>04 Cls</span></li><li data-for="papers"><span>05 Rob</span></li><li data-for="robotics"><span>06 Loc</span></li><li data-for="contact"><span>07 Link</span></li>
+    </ol>
+    <p class="rail-rec"><i class="hud-dot"></i><span data-clock>00:00</span></p>
+  </div>
+
+  <main id="main">
+
+    <!-- ===================================================== 00 · RAW FEED (hero)
+         The name is real text, and it paints at once (the facts and links too). feed.js adds:
+         behind it, the camera's sparse depth view of a field floor (24-inch tiles, points tinted
+         by distance, a few tracked features with their optical flow); over it, a "knocked
+         camera" outline (.name-ghost) that the bias correction pulls back into place once,
+         when the typeface lands. No detection boxes yet: the detector switches on at 02. -->
+    <section class="hero" id="top" aria-labelledby="name" data-stage="00 Raw feed" data-short="00 Raw">
+      <div class="hero-in">
+        <p class="feed-bar" aria-hidden="true">
+          <span>CAM 01 · Raw feed · depth</span>
+          <span class="fb-status">Pose <b data-status>Locked</b></span>
+        </p>
+        <div class="name-wrap" data-feed>
+          <h1 id="name" class="name"><span class="l">Richard</span> <span class="l">B. Wang</span></h1>
+          <p class="name-ghost" aria-hidden="true"><span class="l">Richard</span> <span class="l">B. Wang</span></p>
+          <!-- Shown only while the camera is knocked (desktop). -->
+          <p class="level" aria-hidden="true"><span>Roll <b data-roll>0.0°</b></span><span>Shift <b data-shift>0 px</b></span><span>Bias <b data-bias>corrected</b></span></p>
+        </div>
+
+        <div class="hero-info">
+          <div class="hi-a">
+            <p class="tagline">robotics <span aria-hidden="true">·</span> tools <span aria-hidden="true">·</span> vision</p>
+          </div>
+          <!-- Quick facts, set like a camera's parameter readout. One <div> per line. -->
+          <dl class="readout">
+            <div><dt>study</dt><dd>B.S. Computer Science, USC, <span class="nowrap">2026–2028</span></dd></div>
+            <div><dt>now</dt><dd><a href="#experience">research at iLab&nbsp;· LavaLab</a></dd></div>
+            <div><dt>papers</dt><dd><a href="#papers">IEEE ICCAS 2025&nbsp;· IEEE WRC SARA 2025</a> (first&nbsp;author)</dd></div>
+            <div><dt>record</dt><dd><a href="#honors">#1&nbsp;in the world, VEX&nbsp;Autonomous&nbsp;Skills&nbsp;· <span class="nowrap rec-b">World&nbsp;Finalist, 2nd&nbsp;of&nbsp;20,000+&nbsp;teams</span></a></dd></div>
+          </dl>
+          <ul class="cta" aria-label="Contact links">
+            <!-- Email button: site.js turns it into a mailto: link (the address is stored once, in the
+                 CONTACT section below). Without JS it goes to GitHub, and the hint says so. -->
+            <li><a class="btn" href="https://github.com/richardbwang" data-mail data-mail-label="email me">get in touch</a> <span class="hint" data-mail-hint>via GitHub</span></li>
+            <li><a href="https://github.com/richardbwang">github</a></li>
+            <li><a href="https://www.linkedin.com/in/richard-b-wang/">linkedin</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================== 01 · CALIBRATION (about)
+         stages.js acts this stage out AROUND the portrait, never on it: a graticule in the
+         margin and the frame's edges come in bowed by an uncalibrated lens (barrel distortion),
+         the checkerboard's 54 inner corners are found one by one, and the lines straighten.
+         The photo itself is always shown clean. Without JS or motion: the finished state. -->
+    <section class="ch about" id="about" aria-labelledby="about-h" data-stage="01 Calibration" data-short="01 Cal">
+      <div class="about-grid">
+        <div class="about-pic" data-cal>
+          <!-- Main portrait. Replace assets/me.jpg with any 4:5 photo. No boxes or effects on people, ever. -->
+          <figure class="frame" data-name="me.jpg">
+            <div class="fm" aria-hidden="true"><span>ref_frame · me.jpg</span><span data-cal-state>rectified</span></div>
+            <div class="fi"><img src="assets/me.jpg" width="800" height="1000" loading="lazy" decoding="async" alt="Portrait of Richard B. Wang"></div>
+          </figure>
+          <!-- A camera-calibration checkerboard: 10×7 squares (CSS), 9×6 inner corners (SVG). The
+               line joins the corners in detection order, row by row. Decorative. -->
+          <div class="checker" aria-hidden="true">
+            <svg viewBox="0 0 100 70" focusable="false">
+              <polyline points="10,10 20,10 30,10 40,10 50,10 60,10 70,10 80,10 90,10 10,20 20,20 30,20 40,20 50,20 60,20 70,20 80,20 90,20 10,30 20,30 30,30 40,30 50,30 60,30 70,30 80,30 90,30 10,40 20,40 30,40 40,40 50,40 60,40 70,40 80,40 90,40 10,50 20,50 30,50 40,50 50,50 60,50 70,50 80,50 90,50 10,60 20,60 30,60 40,60 50,60 60,60 70,60 80,60 90,60" pathLength="1"/>
+              <g><circle cx="10" cy="10" r="1.7" style="--i:0"/><circle cx="20" cy="10" r="1.7" style="--i:1"/><circle cx="30" cy="10" r="1.7" style="--i:2"/><circle cx="40" cy="10" r="1.7" style="--i:3"/><circle cx="50" cy="10" r="1.7" style="--i:4"/><circle cx="60" cy="10" r="1.7" style="--i:5"/><circle cx="70" cy="10" r="1.7" style="--i:6"/><circle cx="80" cy="10" r="1.7" style="--i:7"/><circle cx="90" cy="10" r="1.7" style="--i:8"/><circle cx="10" cy="20" r="1.7" style="--i:9"/><circle cx="20" cy="20" r="1.7" style="--i:10"/><circle cx="30" cy="20" r="1.7" style="--i:11"/><circle cx="40" cy="20" r="1.7" style="--i:12"/><circle cx="50" cy="20" r="1.7" style="--i:13"/><circle cx="60" cy="20" r="1.7" style="--i:14"/><circle cx="70" cy="20" r="1.7" style="--i:15"/><circle cx="80" cy="20" r="1.7" style="--i:16"/><circle cx="90" cy="20" r="1.7" style="--i:17"/><circle cx="10" cy="30" r="1.7" style="--i:18"/><circle cx="20" cy="30" r="1.7" style="--i:19"/><circle cx="30" cy="30" r="1.7" style="--i:20"/><circle cx="40" cy="30" r="1.7" style="--i:21"/><circle cx="50" cy="30" r="1.7" style="--i:22"/><circle cx="60" cy="30" r="1.7" style="--i:23"/><circle cx="70" cy="30" r="1.7" style="--i:24"/><circle cx="80" cy="30" r="1.7" style="--i:25"/><circle cx="90" cy="30" r="1.7" style="--i:26"/><circle cx="10" cy="40" r="1.7" style="--i:27"/><circle cx="20" cy="40" r="1.7" style="--i:28"/><circle cx="30" cy="40" r="1.7" style="--i:29"/><circle cx="40" cy="40" r="1.7" style="--i:30"/><circle cx="50" cy="40" r="1.7" style="--i:31"/><circle cx="60" cy="40" r="1.7" style="--i:32"/><circle cx="70" cy="40" r="1.7" style="--i:33"/><circle cx="80" cy="40" r="1.7" style="--i:34"/><circle cx="90" cy="40" r="1.7" style="--i:35"/><circle cx="10" cy="50" r="1.7" style="--i:36"/><circle cx="20" cy="50" r="1.7" style="--i:37"/><circle cx="30" cy="50" r="1.7" style="--i:38"/><circle cx="40" cy="50" r="1.7" style="--i:39"/><circle cx="50" cy="50" r="1.7" style="--i:40"/><circle cx="60" cy="50" r="1.7" style="--i:41"/><circle cx="70" cy="50" r="1.7" style="--i:42"/><circle cx="80" cy="50" r="1.7" style="--i:43"/><circle cx="90" cy="50" r="1.7" style="--i:44"/><circle cx="10" cy="60" r="1.7" style="--i:45"/><circle cx="20" cy="60" r="1.7" style="--i:46"/><circle cx="30" cy="60" r="1.7" style="--i:47"/><circle cx="40" cy="60" r="1.7" style="--i:48"/><circle cx="50" cy="60" r="1.7" style="--i:49"/><circle cx="60" cy="60" r="1.7" style="--i:50"/><circle cx="70" cy="60" r="1.7" style="--i:51"/><circle cx="80" cy="60" r="1.7" style="--i:52"/><circle cx="90" cy="60" r="1.7" style="--i:53"/></g>
+            </svg>
+          </div>
+        </div>
+        <div class="about-text">
+          <h2 class="stage" id="about-h"><span class="ix" aria-hidden="true">01</span>About <span class="stage-k" aria-hidden="true">/ Calibration</span></h2>
+          <p class="statement" data-reveal>I write autonomous software for robots, build full-stack tools, and research robot vision that holds up when conditions are bad: <span class="cond cond-knock">a knocked camera</span>, <span class="cond cond-dark">low light</span>, <span class="cond cond-glare">glare</span>.</p>
+          <p class="about-2" data-reveal>I co-founded VEX team <strong>1698V</strong> and led its programming from 2022 to 2026. We were #1 in the world in VEX Autonomous Skills (Nov 2025) and world finalists, 2nd of 20,000+ teams (2025). I wrote <a href="#rw-template">RW-Template</a>, an open-source autonomous framework with 1,000+ downloads and a 450+ member community. I’m first author of two IEEE papers on robust robot vision and now research in Prof. Laurent Itti’s iLab at USC.</p>
+          <p class="cb-note" aria-hidden="true"><span>Checkerboard · 9×6 inner corners · <b data-cb>found</b></span><span>Lens · barrel distortion · <b data-k1>removed</b></span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================== 02 · DETECTION (honors, the headline list)
+         The detector switches on here: the first boxes on the page. The title is detected (its box
+         arrives as a loose dashed guess and snaps on, then its class tag, then the corner features
+         feed.js finds on the word), and each honor carries its class. Season-by-season robotics
+         results live in the ROBOTICS log; keep each result in one of the two. -->
+    <section class="ch" id="honors" aria-labelledby="honors-h" data-stage="02 Detection" data-short="02 Det">
+      <header class="ch-head v-detect">
+        <p class="stage" aria-hidden="true"><span class="ix">02</span>Detection <span class="stage-k">· detector on</span></p>
+        <h2 class="giant" id="honors-h" data-reveal><span class="giant-w" data-feat>Honors<span class="dtag" aria-hidden="true">text</span></span></h2>
+        <p class="lede" data-reveal>The short list. The VEX results are with team 1698V; the full record is <a href="#results">further down</a>.</p>
+      </header>
+
+      <ul class="credits">
+        <li data-reveal><span class="cls" aria-hidden="true">robotics</span><span class="when">Nov 2025</span><strong>#1 in the world, VEX Autonomous Skills</strong> <span class="note">96 points</span></li>
+        <li data-reveal><span class="cls" aria-hidden="true">robotics</span><span class="when">2025</span><strong>VEX Robotics World Finalist</strong> <span class="note">2nd of 20,000+ teams</span></li>
+        <li data-reveal><span class="cls" aria-hidden="true">programming</span><span class="when">Jan 2025</span><strong>USACO Gold</strong> <span class="note">USA Computing Olympiad</span></li>
+        <li data-reveal><span class="cls" aria-hidden="true">robotics</span><span class="when">2025, 2026</span><strong>2× VEX World Championship division champion</strong> <span class="note">Our 83-team division (2025) and the Math Division (2026)</span></li>
+        <li data-reveal><span class="cls" aria-hidden="true">academic</span><span class="when">2026</span><strong>National Merit Finalist</strong> <span class="note">National Merit Scholarship, <span class="nowrap">2026–2030</span></span></li>
+        <li data-reveal><span class="cls" aria-hidden="true">robotics</span><span class="when">2023, 2026</span><strong>2× VEX California State Champion</strong></li>
+      </ul>
+    </section>
+
+    <!-- ===================================================== 03 · TRACKING (projects)
+         Titles marked data-trk get a tracked box (added by stages.js) that trails them as you
+         scroll: a tracker with a little latency. The chapter title always shows its box; a
+         project name shows its box only while you point at it or focus its link.
+         The rhythm: RW-Template (its simulator on the right), the drone (its clip on the left),
+         Toph (its dashboard on the right), then DueSync and the smaller repos, text only.
+         The two screenshots (.ui-shot) are light UIs on a dark page, so each sits on a dark mat
+         inside its frame. Files: assets/projects/, WebP + JPEG at 1200 and 640 wide. -->
+    <section class="ch" id="projects" aria-labelledby="projects-h" data-stage="03 Tracking" data-short="03 Trk">
+      <header class="ch-head v-track">
+        <p class="stage" aria-hidden="true"><span class="ix">03</span>Tracking <span class="stage-k">· tracker on</span></p>
+        <h2 class="giant" id="projects-h" data-reveal><span class="giant-w" data-trk="00">Projects</span></h2>
+        <p class="lede" data-reveal>Things I’ve built. Names link to the code where it’s public.</p>
+      </header>
+
+      <!-- ---------- RW-Template (the lead entry) ----------
+           The name is set nowrap (style.css), so it never splits after "RW-". -->
+      <article class="proj lead" id="rw-template" aria-labelledby="rw-h" data-reveal>
+        <p class="trk"><span aria-hidden="true">01</span><span><span class="sr-only">Language: </span>C++</span></p>
+        <h3 class="proj-name" id="rw-h" data-trk="01"><a href="https://github.com/richardbwang/RW-Template">RW-Template</a></h3>
+        <!-- The star count is refreshed live by site.js; 83 (Oct 2026) is the fallback. -->
+        <ul class="stats" aria-label="RW-Template on GitHub">
+          <li><b><span data-stars>83</span></b> stars</li>
+          <li><b>25</b> forks</li>
+          <li><b>1,000+</b> release downloads</li>
+          <li class="asof">as of Oct 2026</li>
+        </ul>
+        <div class="proj-body">
+          <p class="proj-lede"><strong>VEX V5 autonomous template</strong> for VEXcode and VS Code: PID and odometry (with or without tracking wheels), Monte Carlo Localization, motion profiling, pure pursuit and RAMSETE path following, and a simulator that fits a drive model from a 15-second calibration log, so you can test autons without a robot.</p>
+          <!-- The simulator's replay page (a screenshot); it opens the replays. -->
+          <figure class="frame ui-shot rw-shot" data-name="sim-replay" data-no-fx>
+            <div class="fm" aria-hidden="true"><span>screen · rw sim replay</span><span>path example</span></div>
+            <div class="fi">
+              <a href="https://richardbwang.github.io/RW-Template/simulator/replays/">
+                <picture>
+                  <source type="image/webp" srcset="assets/projects/sim-replay-640.webp 640w, assets/projects/sim-replay-1200.webp 1200w" sizes="(min-width: 900px) 46vw, 92vw">
+                  <img src="assets/projects/sim-replay-1200.jpg" srcset="assets/projects/sim-replay-640.jpg 640w, assets/projects/sim-replay-1200.jpg 1200w" sizes="(min-width: 900px) 46vw, 92vw" width="1200" height="704" loading="lazy" decoding="async"
+                       alt="RW Sim Replay, RW-Template’s simulator, replaying an auton on a top-down VEX field: the path where the robot really went (solid blue) and where RW thought it was (dashed orange) nearly overlap, ending 0.38 inches apart. Opens the simulator replays.">
+                </picture>
+              </a>
+            </div>
+            <figcaption>RW-Template’s simulator replaying an auton: where the robot really went vs. where RW thought it was.</figcaption>
+          </figure>
+          <div class="proj-side">
+            <p>In development since June 2022 and open source since May 2025, with a 450+ member community around it.</p>
+            <p class="dim">Also runs on PROS. X-drive, mecanum and H-drive; async motions; an auton selector.</p>
+            <ul class="links">
+              <li><a href="https://github.com/richardbwang/RW-Template">repo</a></li>
+              <li><a href="https://richardbwang.github.io/RW-Template/">docs</a></li>
+              <li><a href="https://richardbwang.github.io/RW-Template/simulator/replays/">simulator replays</a></li>
+              <li><a href="https://www.youtube.com/watch?v=8Jc4cY9hJT4">setup video</a></li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- ---------- Autonomous drone perception (hackathon; no public repo, so no link) ----------
+           The boxes over this clip ("can", "drone") are drawn by site.js from its TRACKS table
+           (keyed by data-name): one box per 0.1 s of video, made by colour-tracking the clip
+           offline. They illustrate the idea; they aren't the drone's own output, and the
+           in-frame label says so. -->
+      <article class="proj drone" aria-labelledby="drone-h">
+        <div class="drone-media">
+          <figure class="frame clip tracked af" data-name="drone-2026.mp4" data-reveal>
+            <div class="fm" aria-hidden="true"><span>drone-2026.mp4</span><span class="tc" data-tc>00:00:00</span></div>
+            <div class="fi clip-box">
+              <img src="assets/videos/posters/drone-2026.jpg" width="960" height="540" loading="lazy" decoding="async" alt="">
+              <video src="assets/videos/drone-2026.mp4" width="960" height="540" muted loop playsinline preload="none" controls
+                     aria-label="A small quadcopter flies itself across an office, turns toward a tower of Coke cans on a table and knocks it over"></video>
+              <span class="src-note" aria-hidden="true"><span class="sn-k">track · </span>offline colour track<span class="sn-long">, not the drone’s YOLO</span></span>
+            </div>
+            <figcaption>Autonomous flight, South Park Commons hackathon, May 2026.</figcaption>
+          </figure>
+        </div>
+        <div class="drone-text" data-reveal>
+          <p class="trk"><span aria-hidden="true">02</span><span><span class="sr-only">Language: </span>Python</span></p>
+          <h3 class="proj-name" id="drone-h" data-trk="02">drone-perception</h3>
+          <p><strong>Autonomous drone perception</strong>, built at a South Park Commons hackathon (May 2026). YOLO spots the Coke cans in real time; the drone estimates where they are, turns, flies in on its own and knocks them over. Vision inference, telemetry and relative waypoint control run through NimbusOS.</p>
+          <ul class="chips" aria-label="Stack"><li>Python</li><li>YOLO</li><li>NimbusOS</li></ul>
+        </div>
+      </article>
+
+      <!-- ---------- Toph (LavaLab's developer challenge; the LavaLab role in Experience links here) ----------
+           Its text on the left and its dashboard on the right: the drone above is the other way round. -->
+      <article class="proj toph" id="toph" aria-labelledby="toph-h">
+        <div class="toph-text" data-reveal>
+          <p class="trk"><span aria-hidden="true">03</span><span><span class="sr-only">Language: </span>TypeScript</span></p>
+          <h3 class="proj-name" id="toph-h" data-trk="03"><a href="https://github.com/richardbwang/toph">toph</a></h3>
+          <p><strong>Farm activity dashboard with hands-free voice logs.</strong> A worker’s phone reads five questions aloud and transcribes the answers; the manager reviews each log on a live desktop dashboard with waveform playback, tags, review status and a satellite map of the field. Built full-stack, with session auth, from a Figma design for LavaLab’s Fall 2026 developer challenge.</p>
+          <ul class="chips" aria-label="Stack"><li>Next.js 16</li><li>React 19</li><li>Postgres/Drizzle</li><li>Tailwind 4</li><li>Leaflet</li><li>Claude</li></ul>
+          <ul class="links">
+            <li><a href="https://github.com/richardbwang/toph">repo</a></li>
+            <li><a href="https://toph-woad.vercel.app">live demo</a></li>
+          </ul>
+        </div>
+        <div class="toph-media">
+          <!-- The live demo's dashboard (a screenshot, cropped to its top two-thirds); it opens the demo.
+               Where the frame is small (phones) or its column runs beside a taller text (900–1149px),
+               a closer crop (toph-dashboard-m: the first two counts and the log table's first three
+               columns, 692×598) takes over, so its numbers and names still read. -->
+          <figure class="frame ui-shot" data-name="toph-dashboard" data-no-fx data-reveal>
+            <div class="fm" aria-hidden="true"><span>screen · toph dashboard</span><span>demo data</span></div>
+            <div class="fi">
+              <a href="https://toph-woad.vercel.app">
+                <picture>
+                  <source media="(max-width: 699px), (min-width: 900px) and (max-width: 1149px)" type="image/webp" srcset="assets/projects/toph-dashboard-m.webp" width="692" height="598">
+                  <source media="(max-width: 699px), (min-width: 900px) and (max-width: 1149px)" srcset="assets/projects/toph-dashboard-m.jpg" width="692" height="598">
+                  <source type="image/webp" srcset="assets/projects/toph-dashboard-640.webp 640w, assets/projects/toph-dashboard-1200.webp 1200w" sizes="(min-width: 900px) 54vw, 92vw">
+                  <img src="assets/projects/toph-dashboard-1200.jpg" srcset="assets/projects/toph-dashboard-640.jpg 640w, assets/projects/toph-dashboard-1200.jpg 1200w" sizes="(min-width: 900px) 54vw, 92vw" width="1200" height="481" loading="lazy" decoding="async"
+                       alt="Toph’s manager dashboard with demo data: today’s recordings and active workers counted above a table of new employee logs, each with who, the activity and the date. Opens the live demo.">
+                </picture>
+              </a>
+            </div>
+            <figcaption>Toph’s manager dashboard (demo data).</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <!-- ---------- DueSync (compact: its name on the left, the rest beside it) ---------- -->
+      <article class="proj compact" aria-labelledby="duesync-h" data-reveal>
+        <div class="compact-head">
+          <p class="trk"><span aria-hidden="true">04</span><span><span class="sr-only">Language: </span>JavaScript</span></p>
+          <h3 class="proj-name" id="duesync-h" data-trk="04"><a href="https://github.com/richardbwang/duesync">duesync</a></h3>
+        </div>
+        <div class="compact-body">
+          <p><strong>USC coursework deadlines, synced to Google Calendar.</strong> Every 10 minutes, on Google’s servers, it pulls due dates from Gradescope and Brightspace and has Claude read emails and syllabus PDFs for exams and deadlines. Bigger deadlines get earlier, escalating reminders and countdown banners, and a morning digest lists what’s due.</p>
+          <ul class="chips" aria-label="Stack"><li>Google Apps Script</li><li>Google Calendar</li><li>Claude</li></ul>
+          <ul class="links">
+            <li><a href="https://github.com/richardbwang/duesync">repo</a></li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- ---------- Smaller repos (one line each) ---------- -->
+      <div class="also" data-reveal>
+        <h3 class="sub">Also on GitHub</h3>
+        <ul>
+          <li>
+            <p class="also-name"><a href="https://github.com/richardbwang/Competitive-Programming">Competitive-Programming</a> <span class="lang">C++</span></p>
+            <p>USACO solutions, sorted by topic. Reached USACO Gold in January 2025.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================================================== 04 · CLASSIFICATION (experience, newest first)
+         Each role carries the class it was sorted into (research, engineering, startup, robotics),
+         and the two leadership roles are a lighter group of their own at the end. Two roles have a
+         small side figure: the Startup School photo (it opens the full file; Richard's face is in
+         it, so data-no-fx: no focus hunt, no lens) and 1698V's robot (it jumps to the 3D robot in
+         Robotics). One <li> per role; a role with a figure is li.has-fig, and --ar on the figure
+         is its frame's width ÷ height (the photo's own; the robot stands in a 4:3 frame like it). -->
+    <section class="ch" id="experience" aria-labelledby="experience-h" data-stage="04 Classification" data-short="04 Cls">
+      <header class="ch-head v-classify">
+        <span class="old-id" id="now"></span><!-- the previous site's #now: old links land here, as #experience does -->
+        <p class="stage" aria-hidden="true"><span class="ix">04</span>Classification <span class="stage-k">· classifier on</span></p>
+        <h2 class="giant" id="experience-h" data-reveal><span class="giant-w">Experience</span></h2>
+        <div class="lede-col">
+          <p class="lede" data-reveal>What I’m doing now, and what came before. Newest first.</p>
+          <!-- The classifier's label set: the classes the roles below are sorted into. Decorative. -->
+          <ul class="classes" aria-hidden="true" data-reveal><li>research</li><li>engineering</li><li>startup</li><li>robotics</li><li>leadership</li></ul>
+        </div>
+      </header>
+
+      <ol class="xp">
+        <li data-reveal>
+          <p class="xp-k"><span class="cls" aria-hidden="true">research</span><span class="when">Oct 2026 – <span class="is-now">now</span></span></p>
+          <h3>Undergraduate researcher, iLab <span class="org">Prof. Laurent Itti’s lab, USC</span></h3>
+          <div class="what">
+            <p>On-device episodic memory for blind users: 2–&#8288;4B VLMs over wearable-camera video, evaluated on EgoLifeQA (NEI-funded).</p>
+            <ul class="chips" aria-label="Stack"><li>Python</li><li>VLMs</li></ul>
+          </div>
+        </li>
+        <li data-reveal>
+          <p class="xp-k"><span class="cls" aria-hidden="true">engineering</span><span class="when">Sep 2026 – <span class="is-now">now</span></span></p>
+          <h3>Product engineer, LavaLab <span class="org">USC’s startup incubator</span></h3>
+          <div class="what"><p>One of 14 developers selected. I built <a href="#toph">Toph</a> (in Projects) for its Fall 2026 developer challenge.</p></div>
+        </li>
+        <li class="has-fig" data-reveal>
+          <p class="xp-k"><span class="cls" aria-hidden="true">startup</span><span class="when">Jul 2026</span></p>
+          <h3>Y Combinator Startup School</h3>
+          <div class="what"><p>Admitted at a 5% acceptance rate; one of 12 picked for a private dinner with a YC partner.</p></div>
+          <figure class="frame xp-fig" data-name="startup-school.jpg" data-no-fx style="--ar: 1.333">
+            <div class="fm" aria-hidden="true"><span>startup-school.jpg</span></div>
+            <div class="fi">
+              <a href="assets/startup-school.jpg"><img src="assets/startup-school-640.jpg" srcset="assets/startup-school-640.jpg 640w, assets/startup-school.jpg 1200w" sizes="(min-width: 900px) 267px, 144px" width="1200" height="900" loading="lazy" decoding="async"
+                   alt="Richard B. Wang (right) and a friend in front of the orange Startup School 2026 screen at Y Combinator, both wearing attendee badges"></a>
+            </div>
+          </figure>
+        </li>
+        <li class="has-fig" data-reveal>
+          <p class="xp-k"><span class="cls" aria-hidden="true">robotics</span><span class="when">2022 – 2026</span></p>
+          <h3>Co-founder &amp; programming lead, VEX team 1698V</h3>
+          <div class="what">
+            <p>Architected the autonomous stack: PID, odometry, IMU fusion, motion profiling, path planning. Mentored three teams. <a href="#results">Results&nbsp;below</a>.</p>
+            <ul class="chips" aria-label="Stack"><li>C++</li><li>VEX V5</li></ul>
+          </div>
+          <figure class="frame xp-fig xp-robot" data-name="hs-3q" data-no-fx style="--ar: 1.333">
+            <div class="fm" aria-hidden="true"><span>cad · 1698V</span></div>
+            <div class="fi">
+              <a href="#robotics"><picture>
+                <source type="image/webp" srcset="assets/robot/hs-3q-400.webp 400w, assets/robot/hs-3q-640.webp 640w" sizes="(min-width: 900px) 160px, 90px">
+                <img src="assets/robot/hs-3q-640.png" width="640" height="800" loading="lazy" decoding="async"
+                     alt="CAD render of 1698V’s High Stakes robot (2024–25). Opens the robot in Robotics.">
+              </picture></a>
+            </div>
+            <figcaption>Up close in Robotics</figcaption>
+          </figure>
+        </li>
+      </ol>
+
+      <!-- Leadership: two one-liners, lighter than the roles above (no tags, no figures): the dates, then
+           the role in bold running on into its line, as one sentence (.xl). -->
+      <div class="xp-lead" data-reveal>
+        <h3 class="xp-sub">Leadership</h3>
+        <ul>
+          <li><span class="when">2025 – 2026</span><span class="xl"><strong>Co-founder &amp; co-president, Power Beans Foundation</strong><span class="xl-d"> — a nonprofit running free robotics workshops; I taught autonomous programming.</span></span></li>
+          <li><span class="when">2025 – 2026</span><span class="xl"><strong>Founder, captain &amp; quarterback, varsity football</strong><span class="xl-d"> — started my high school’s first varsity football program.</span></span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================================================== 05 · ROBUSTNESS (papers)
+         The title arrives lightly degraded (noise, glare at its edge, a misregistered channel) and
+         clears in under a second; it stays readable in every frame. The "copy bibtex" button builds
+         BibTeX from the visible fields marked data-bib="…" (plus data-bib-key on the <li>). -->
+    <section class="ch" id="papers" aria-labelledby="papers-h" data-stage="05 Robustness" data-short="05 Rob">
+      <header class="ch-head v-robust">
+        <p class="stage" aria-hidden="true"><span class="ix">05</span>Robustness <span class="stage-k">· bad conditions</span></p>
+        <h2 class="giant" id="papers-h" data-reveal><span class="giant-w">Papers</span></h2>
+        <div class="lede-col">
+          <p class="lede" data-reveal>Monocular vision that holds up when the camera or the conditions don’t. First author on both.</p>
+          <p class="mread" aria-hidden="true" data-reveal>conditions · knocked camera · darkness · dim light · glare</p>
+        </div>
+      </header>
+
+      <!-- The conditions viewer: one frame from a team practice run (NOT the papers' camera footage
+           or data), degraded four ways (CSS filters and transforms), and a correction amount --c
+           from 0 (raw) to 1 (corrected): the view straightens and clears, and the dashed estimate
+           box slides onto the hand-placed ground-truth box. site.js wires the buttons, the slider
+           and the pointer (left = raw, right = corrected), and plays the correction once when the
+           viewer comes into view. Without JS it rests fully corrected. Shown at its native 960px.
+           An illustration only: the caption and the readout's first line say so. -->
+      <figure class="viewer cond-knock" data-viewer data-reveal>
+        <div class="viewer-ctrl" role="group" aria-label="Condition to show" hidden>
+          <button type="button" data-cond="knock" aria-pressed="true">Camera knocked <small>IEEE ICCAS 2025</small></button>
+          <button type="button" data-cond="dark" aria-pressed="false">Darkness <small>IEEE WRC SARA 2025</small></button>
+          <button type="button" data-cond="dim" aria-pressed="false">Dim artificial light <small>IEEE WRC SARA 2025</small></button>
+          <button type="button" data-cond="glare" aria-pressed="false">Glare <small>IEEE WRC SARA 2025</small></button>
+        </div>
+        <div class="viewer-main">
+          <div class="vs" style="--c: 1">
+            <div class="vs-layer vs-raw" aria-hidden="true">
+              <img src="assets/videos/posters/practice-2025.jpg" width="960" height="540" loading="lazy" decoding="async" alt="">
+              <i class="vs-glare"></i><i class="vs-zebra"></i>
+            </div>
+            <div class="vs-layer vs-fix">
+              <img src="assets/videos/posters/practice-2025.jpg" width="960" height="540" loading="lazy" decoding="async" alt="A robot on a practice field next to two yellow mobile goals, seen from beside the field wall">
+            </div>
+            <span class="bxs" aria-hidden="true">
+              <span class="bx bx-true" style="--x:56%;--y:15%;--w:14.5%;--h:23%"><b>robot</b></span>
+              <span class="bx bx-true" style="--x:67.5%;--y:14%;--w:10%;--h:33%"><b class="d">goal</b></span>
+              <span class="bx bx-raw"><b class="d">est<span class="bx-long">imate</span></b></span>
+            </span>
+          </div>
+          <!-- The viewer's readout. Decorative (the caption says the same in words). -->
+          <dl class="vs-panel" aria-hidden="true">
+            <div class="vs-src"><dt>frame</dt><dd>team practice run · illustration only</dd></div>
+            <div><dt>condition</dt><dd data-v-cond>camera knocked</dd></div>
+            <div><dt>studied in</dt><dd data-v-paper>IEEE ICCAS 2025</dd></div>
+            <div><dt>view</dt><dd class="vs-mode">corrected</dd></div>
+            <div><dt>correction</dt><dd><b data-c-read>100%</b></dd></div>
+            <div class="vs-key"><dt>key</dt><dd><span><i class="k-gt"></i>ground truth</span><span><i class="k-est"></i>estimate</span></dd></div>
+          </dl>
+        </div>
+        <label class="vs-range" hidden><span>Correction</span><input type="range" min="0" max="100" value="100" data-fix></label>
+        <figcaption>Illustration only: a frame from a team practice run, not the papers’ camera footage. Shown: <span data-cond-name>a knocked camera</span>, one of the conditions the papers study, and its correction.</figcaption>
+      </figure>
+
+      <ol class="bib">
+        <!-- ---------- ICCAS 2025 ---------- -->
+        <li class="paper" data-bib-key="wang2025biasaware" data-reveal>
+          <p class="venue-tag" aria-hidden="true"><span>IEEE ICCAS 2025</span><span>Camera misalignment</span></p>
+          <h3 data-bib="title">A Bias-Aware Learning Model for Reliable Monocular Perception under Camera Misalignment</h3>
+          <dl class="fields">
+            <div><dt>authors</dt><dd data-bib="author"><strong class="me">Richard B. Wang</strong>, Grant Han, Alexander Liu, Zixuan Ye, Alexander Deng, Lexie Liu, Xing Wei<span title="corresponding author">*</span></dd></div>
+            <div><dt>venue</dt><dd><span data-bib="booktitle">Proc. IEEE International Conference on Control, Automation and Systems (ICCAS)</span>, <span data-bib="year">2025</span></dd></div>
+            <div><dt>pages</dt><dd data-bib="pages">1643–1649</dd></div>
+            <div><dt>tl;dr</dt><dd>A lightweight bias-modeling module that learns and compensates for the systematic errors that appear when a robot’s camera gets knocked out of alignment. Evaluated on monocular distance estimation.</dd></div>
+          </dl>
+          <ul class="links">
+            <li><a href="https://github.com/richardbwang/International-Conference-on-Control-Automation-Systems-2025-Paper/blob/main/iccas_camera3.pdf">pdf</a></li>
+            <li><a href="https://github.com/richardbwang/International-Conference-on-Control-Automation-Systems-2025-Paper">code</a></li>
+            <li hidden><button type="button" class="linkish" data-copy-bib aria-label="Copy BibTeX for the IEEE ICCAS 2025 paper">copy bibtex</button></li>
+          </ul>
+        </li>
+
+        <!-- ---------- WRC SARA 2025 ---------- -->
+        <li class="paper" data-bib-key="wang2025widedeep" data-reveal>
+          <p class="venue-tag" aria-hidden="true"><span>IEEE WRC SARA 2025</span><span>Darkness · dim light · glare</span></p>
+          <h3 data-bib="title">Robust Monocular Distance Estimation in Degraded Visual Conditions via a Wide-and-Deep Fusion Framework</h3>
+          <dl class="fields">
+            <div><dt>authors</dt><dd data-bib="author"><strong class="me">Richard B. Wang</strong>, Grant Han, Alexander Liu, Zixuan Ye, Alexander Deng, Lexie Liu, Xing Wei</dd></div>
+            <div><dt>venue</dt><dd><span data-bib="booktitle">Proc. IEEE World Robot Conference Symposium on Advanced Robotics and Automation (WRC SARA)</span>, <span data-bib="year">2025</span></dd></div>
+            <div><dt>pages</dt><dd data-bib="pages">47–52</dd></div>
+            <div><dt>tl;dr</dt><dd>Compares transformer preprocessing, fine-tuning, and a new wide-and-deep model that fuses recent motion history with CNN image features. The fusion model is the most consistent across darkness, dim artificial light and glare.</dd></div>
+          </dl>
+          <ul class="links">
+            <li><a href="https://github.com/richardbwang/World-Robot-Conference-2025-Paper/blob/main/WRC20254.pdf">pdf</a></li>
+            <li><a href="https://github.com/richardbwang/World-Robot-Conference-2025-Paper">code</a></li>
+            <li hidden><button type="button" class="linkish" data-copy-bib aria-label="Copy BibTeX for the IEEE WRC SARA 2025 paper">copy bibtex</button></li>
+          </ul>
+        </li>
+      </ol>
+      <p class="footnote">* corresponding author</p>
+      <p class="sr-only" role="status" data-copy-status></p>
+    </section>
+
+    <!-- ===================================================== 06 · LOCALIZATION (robotics)
+         The title is localized from a particle cloud (stages.js). Then: the results log with the
+         totals as its last line, beside a live Monte Carlo localization illustration on a Push Back
+         field; the autons; the team videos; the team photos as a contact strip; and Worlds 2026,
+         ending in the Dome. VEX red joins the palette in this chapter.
+         The opener's centrepiece: the 1698V High Stakes robot from its CAD. The still (a lazy
+         <img>) IS the picture: without JS, with reduced motion, and wherever WebGL can't run.
+         On a desktop with motion, stages.js pins the opener (.r3d-track gets its scroll length)
+         and, once it is within ~1.5 screens, loads robot3d.js + three.js + the model; the 3D
+         takes over from the still and the scroll plays it: reconstruct, detect, turn (with a
+         depth pass), explode, assemble, drive off. Phones get a "Load 3D model" button instead.
+         See README, "3D robot". -->
+    <section class="ch" id="robotics" aria-labelledby="robotics-h" data-stage="06 Localization" data-short="06 Loc">
+      <div class="r3d-track" data-r3d-track>
+      <header class="ch-head v-loc">
+        <p class="stage" aria-hidden="true"><span class="ix">06</span>Localization <span class="stage-k">· particle filter on</span></p>
+        <h2 class="giant" id="robotics-h" data-reveal><span class="giant-w" data-particles>Robotics</span></h2>
+        <!-- The robot. data-r3d names its entry in robot3d.js (ROBOTS); data-glb/data-bytes its model.
+             The stills are rendered by robot3d.js itself, at the 3D view's opening pose, so the
+             crossfade doesn't move the robot. The box and its tag on the still, and the exploded
+             still's labels, are where robot3d.js puts them at that pose (in % of the frame). -->
+        <figure class="r3d" data-r3d="hs" data-glb="assets/robot/robot-hs.glb" data-bytes="1925664">
+          <div class="r3d-track-m"><div class="r3d-pin">
+            <div class="fm r3d-fm" aria-hidden="true"><span>cam 06 <i>· cad </i>· 1698V</span><span data-r3d-state>still · 3/4 view</span></div>
+            <div class="r3d-view" data-r3d-view>
+              <div class="r3d-frame">
+                <picture class="r3d-still r3d-as">
+                  <source type="image/webp" srcset="assets/robot/hs-3q-640.webp 640w, assets/robot/hs-3q-1040.webp 1040w" sizes="(min-width: 1000px) 40vw, 90vw">
+                  <img src="assets/robot/hs-3q-640.png" width="1040" height="1300" loading="lazy" decoding="async"
+                       alt="CAD render of the 1698V High Stakes robot, seen low from its left side: the aluminium drive base on six omni wheels with the intake at the front, the X-braced lift towers and hook conveyor with a big red sprocket at the top, the lift arm reaching up at the front, and the pneumatic goal clamp at the back.">
+                </picture>
+                <span class="r3d-sbox" aria-hidden="true" style="--x0:8.3%;--y0:4.8%;--x1:89.9%;--y1:97.1%"><b>Robot · 1698V · High Stakes 2024–25</b></span>
+                <picture class="r3d-still r3d-ex" hidden>
+                  <source type="image/webp" srcset="assets/robot/hs-exploded-640.webp 640w, assets/robot/hs-exploded-1040.webp 1040w" sizes="(min-width: 1000px) 40vw, 90vw">
+                  <img src="assets/robot/hs-exploded-640.png" width="1040" height="1300" loading="lazy" decoding="async"
+                       alt="The same robot pulled apart into an exploded drawing of its main assemblies: lift arm, lift towers, hook conveyor, goal clamp, intake, drivetrain, wheels and odometry pod.">
+                </picture>
+                <div class="r3d-slabs" aria-hidden="true" hidden>
+                  <svg viewBox="0 0 100 125" preserveAspectRatio="none" focusable="false"><path d="M38.7 34.3L16.5 34.3M64.1 63.7L79.0 63.7M43.6 77.7L23.8 77.7M69.8 75.1L80.6 75.1M18.3 113.6L13.5 113.6M69.8 101.0L80.6 103.5M86.8 98.5L86.5 98.5M51.2 100.7L22.3 100.7"/><circle cx="39.7" cy="34.3" r="0.9"/><circle cx="63.1" cy="63.7" r="0.9"/><circle cx="44.6" cy="77.7" r="0.9"/><circle cx="68.7" cy="75.1" r="0.9"/><circle cx="19.3" cy="113.6" r="0.9"/><circle cx="68.7" cy="100.8" r="0.9"/><circle cx="85.7" cy="98.5" r="0.9"/><circle cx="52.2" cy="100.7" r="0.9"/></svg>
+                  <span class="r3d-tag l" style="--x:16.5%;--y:27.5%">lift arm</span>
+                  <span class="r3d-tag r" style="--x:79.0%;--y:51.0%">lift towers</span>
+                  <span class="r3d-tag l" style="--x:23.8%;--y:62.1%">hook conveyor</span>
+                  <span class="r3d-tag r" style="--x:80.6%;--y:60.1%">goal clamp</span>
+                  <span class="r3d-tag l" style="--x:13.5%;--y:90.9%">intake</span>
+                  <span class="r3d-tag r" style="--x:80.6%;--y:82.8%">drivetrain</span>
+                  <span class="r3d-tag r" style="--x:86.5%;--y:78.8%">wheels</span>
+                  <span class="r3d-tag l" style="--x:22.3%;--y:80.6%">odometry pod</span>
+                </div>
+              </div>
+            </div>
+            <!-- The controls (hidden without JS). Each button's name is its visible label; the two
+                 labels of a switch share one cell, so it never changes width. -->
+            <div class="r3d-bar" hidden>
+              <button type="button" class="r3d-btn r3d-load" data-r3d-load hidden>Load 3D model <small>2.1 MB</small></button>
+              <button type="button" class="r3d-btn" data-r3d-explode><span class="sw"><span class="sw-a">Explode</span><span class="sw-b">Assemble</span></span></button>
+              <button type="button" class="r3d-btn" data-r3d-reset hidden>Reset view</button>
+              <button type="button" class="r3d-btn r3d-motion" data-r3d-motion hidden><i aria-hidden="true"></i><span class="sw"><span class="hm-a">Pause motion</span><span class="hm-b">Resume motion</span></span></button>
+            </div>
+          </div></div>
+          <!-- The parts the exploded view labels (the 3D's callouts light these up in step; it is
+               also the explode's text alternative). data-part = the label's word in robot3d.js. -->
+          <div class="r3d-parts">
+            <p class="r3d-parts-h">The main assemblies</p>
+            <ol>
+              <li data-part="lift arm">Lift arm</li>
+              <li data-part="lift towers">Lift towers</li>
+              <li data-part="hook conveyor">Hook conveyor</li>
+              <li data-part="goal clamp">Goal clamp</li>
+              <li data-part="intake">Intake</li>
+              <li data-part="drivetrain">Drivetrain</li>
+              <li data-part="wheels">Wheels</li>
+              <li data-part="odometry pod">Odometry pod</li>
+            </ol>
+          </div>
+          <figcaption><strong>1698V’s High Stakes robot (2024–25).</strong> At the 2025 VEX Robotics World Championship, high school, we won our division and were world finalists: 2nd of 20,000+ teams. I co-founded 1698V and led its programming. <small>A CAD model: the polycarbonate and the chains aren’t modelled.</small></figcaption>
+        </figure>
+      </header>
+      </div>
+
+      <div class="loc-grid">
+        <div class="loc-log" id="results">
+          <p class="lede loc-lede" data-reveal>Results I competed in with VEX team 1698V, the Power Beans, in V5RC and VEX&nbsp;AI. Newest first.</p>
+          <!-- One <li> per result. Delete a whole <li>…</li> to drop it. -->
+          <ul class="log">
+            <li data-reveal><span class="when">2026</span><span class="what"><strong>VEX AI Robotics World Championship</strong></span> <span class="res">ranked 5th in qualifying, 7–1</span></li>
+            <li data-reveal><span class="when">2026</span><span class="what"><strong>VEX Robotics World Championship</strong>, high school</span> <span class="res">division champions</span></li>
+            <li data-reveal><span class="when">2026</span><span class="what"><strong>California Region 2 High School Championship</strong></span> <span class="res">tournament champions</span></li>
+            <li data-reveal><span class="when">2025</span><span class="what"><strong>One World Signature Event</strong>, Berkeley</span> <span class="res">tournament champions, Robot Skills champion</span></li>
+            <li data-reveal><span class="when">2025</span><span class="what"><strong>VEX Robotics World Championship</strong>, high school</span> <span class="res">division champions and world finalists, 2nd of 20,000+ teams</span></li>
+            <li data-reveal><span class="when">2025</span><span class="what"><strong>Robolabs VEX AI Robotics Competition</strong></span> <span class="res">tournament champions, undefeated (6–0)</span></li>
+            <li data-reveal><span class="when">2024</span><span class="what"><strong>Space City Signature Event</strong></span> <span class="res">tournament champions of 63 teams</span></li>
+          </ul>
+          <!-- The log's last line: totals from the official record (events.vex.com), high school V5RC. -->
+          <p class="totals" data-reveal>
+            <span class="tot-k">Σ 2024–26</span>
+            <span class="tot"><b>7</b> tournament wins<span class="sr-only">,</span></span>
+            <span class="tot"><b>5</b> Robot Skills Champion titles<span class="sr-only">,</span></span>
+            <span class="tot"><b>3</b> Excellence Awards<span class="sr-only">.</span></span>
+            <span class="tot"><b>5×</b> World Championship qualifier, 2022–2026<span class="sr-only">.</span></span>
+          </p>
+          <ul class="links links-big" data-reveal>
+            <li><a href="https://events.vex.com/teams/V5RC/1698V">full record</a></li>
+            <li><a href="https://www.powerbeans.org/s-projects-side-by-side">team site</a></li>
+            <li><a href="https://www.youtube.com/@1698V">youtube @1698V</a></li>
+          </ul>
+        </div>
+
+        <!-- Monte Carlo localization, simulated live in a <canvas> by stages.js on a top-down Push Back
+             field (6 × 6 tiles of 24 in, perimeter, goals, park zones, loaders). When it comes into
+             view the guesses start scattered and converge over a few seconds, the robot is kidnapped
+             once on its own, and the particles find it again; then it holds. "Kidnap the robot", or
+             dragging the robot (tapping the field on a phone), moves it again. Hidden without JS. -->
+        <figure class="mcl" data-mcl>
+          <div class="fm" aria-hidden="true"><span>mcl · simulation · push back field</span><span data-mcl-state>idle</span></div>
+          <div class="mcl-field"><canvas aria-hidden="true"></canvas></div>
+          <div class="mcl-bar">
+            <button type="button" class="linkish" data-kidnap>Kidnap the robot</button>
+            <p class="mcl-read" aria-hidden="true"><span>n <b data-mcl-n>—</b></span><span>σ <b data-mcl-s>—</b></span><span>x <b data-mcl-x>—</b></span><span>y <b data-mcl-y>—</b></span></p>
+          </div>
+          <figcaption>An illustration of Monte Carlo localization, one of the methods in RW-Template. Each dot is a guess at where the robot is; in this simulation the guesses converge as simulated distance sensors measure the field walls. It runs in your browser and is not recorded robot data. <span class="mcl-tip">Drag the robot, or tap the field, to move it.</span></figcaption>
+        </figure>
+      </div>
+
+      <!-- ---------- Autons ----------
+           One <li> per clip. The poster <img> sits under the <video>; width/height on both = the
+           clip's real pixel size. Without JS a clip is a plain <video controls>. site.js swaps the
+           controls for a play/pause button, loads a clip as it nears the screen and plays it only
+           while it's in view. The second <li> is a pair; --ar = width ÷ height of each clip.
+           See "Add an auton clip" in README.md. -->
+      <div class="sub-head" data-reveal>
+        <h3 class="sub" id="autons">Autons</h3>
+        <p>Autons I programmed. 15 seconds each, no driver.</p>
+      </div>
+      <ul class="clips">
+        <li>
+          <figure class="frame clip af" data-name="dome-2026.mp4" data-reveal>
+            <div class="fm" aria-hidden="true"><span>dome-2026.mp4</span><span class="tc" data-tc>00:00:00</span></div>
+            <div class="fi clip-box">
+              <img src="assets/videos/posters/dome-2026.jpg" width="960" height="720" loading="lazy" decoding="async" alt="">
+              <video src="assets/videos/dome-2026.mp4" width="960" height="720" muted loop playsinline preload="none" controls
+                     aria-label="Overhead broadcast view of one side of a Push Back field: robots drive out and score red and blue blocks during the autonomous period"></video>
+            </div>
+            <figcaption>Worlds 2026, in the Dome: a Round of 16 match auton (Push Back). Cropped from the broadcast to our side; we’re the robot in the bottom left.</figcaption>
+          </figure>
+        </li>
+        <!-- The pair: the red-side and blue-side runs of one routine, framed in alliance colours.
+             Under each clip, its own timeline (.atimer, set by site.js as the clip plays). -->
+        <li class="clips-pair">
+          <p class="pair-label" id="autons-pair">Same auton, both sides.</p>
+          <ul class="pair sides" aria-labelledby="autons-pair">
+            <li class="side-red" style="--ar: 1.134">
+              <figure class="frame clip" data-name="finals-2025.mp4" data-reveal>
+                <div class="fm" aria-hidden="true"><span class="side">Red side</span><span>finals-2025.mp4</span></div>
+                <div class="fi clip-box">
+                  <img src="assets/videos/posters/finals-2025.jpg" width="574" height="506" loading="lazy" decoding="async" alt="">
+                  <video src="assets/videos/finals-2025.mp4" width="574" height="506" muted loop playsinline preload="none" controls
+                         aria-label="Overhead broadcast view: a robot rushes to a yellow mobile goal, grabs it and scores rings"></video>
+                </div>
+                <p class="atimer" aria-hidden="true"><span>Auton</span><i></i><b data-at>0:00.0</b></p>
+                <figcaption>2025 World Finals: the red-side goal-rush auton (High Stakes). Overhead broadcast view.</figcaption>
+              </figure>
+            </li>
+            <li class="side-blue" style="--ar: 1.778">
+              <figure class="frame clip" data-name="practice-2025.mp4" data-reveal>
+                <div class="fm" aria-hidden="true"><span class="side">Blue side</span><span>practice-2025.mp4</span></div>
+                <div class="fi clip-box">
+                  <img src="assets/videos/posters/practice-2025.jpg" width="960" height="540" loading="lazy" decoding="async" alt="">
+                  <video src="assets/videos/practice-2025.mp4" width="960" height="540" muted loop playsinline preload="none" controls
+                         aria-label="A robot on a practice field, filmed from beside the wall, drives to the yellow mobile goals and scores rings"></video>
+                </div>
+                <p class="atimer" aria-hidden="true"><span>Auton</span><i></i><b data-at>0:00.0</b></p>
+                <figcaption>The same goal-rush auton on the blue side, on a practice field (not in competition).</figcaption>
+              </figure>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- ---------- Team videos ----------
+           Each thumbnail is a plain link to YouTube. site.js swaps in the player on click (over
+           http/https only). To change a video, replace the 11-character ID everywhere it appears;
+           leave out data-yt if the video can't be embedded. -->
+      <div class="sub-head" data-reveal>
+        <h3 class="sub" id="videos">Team videos</h3>
+        <p>From the team’s YouTube channel: 84K+ views, 500+ subscribers.</p>
+      </div>
+      <ul class="vids">
+        <li class="vid" data-reveal>
+          <a class="vid-thumb" href="https://www.youtube.com/watch?v=UJ1jPMUfunw" data-yt="UJ1jPMUfunw">
+            <img src="https://i.ytimg.com/vi/UJ1jPMUfunw/hqdefault.jpg" width="480" height="360" loading="lazy" decoding="async" alt="1698V Worlds Auton Explanation">
+            <span class="play" aria-hidden="true"></span>
+          </a>
+          <p class="vid-title">1698V Worlds Auton Explanation</p>
+          <p class="vid-meta">2.4K views</p>
+        </li>
+        <!-- No data-yt: YouTube blocks this video in embedded players, so the thumbnail opens it on YouTube. -->
+        <li class="vid" data-reveal>
+          <a class="vid-thumb" href="https://www.youtube.com/watch?v=fIcXolb385M">
+            <img src="https://i.ytimg.com/vi/fIcXolb385M/hqdefault.jpg" width="480" height="360" loading="lazy" decoding="async" alt="VEX High Stakes World Finalists Recap | 1698V">
+            <span class="play" aria-hidden="true"></span>
+          </a>
+          <p class="vid-title">VEX High Stakes World Finalists Recap | 1698V</p>
+          <p class="vid-meta">11K views</p>
+        </li>
+      </ul>
+
+      <!-- ---------- Team photos: a contact strip ----------
+           Four frames, one per season or event. Justified rows: --ar on each <li> = width ÷ height,
+           so every photo is shown whole and photos in a row share a height (boxes stay on their
+           objects). The page shows the ~640px copy in assets/photos/small/; clicking opens the full
+           file. Three of the four carry hand-placed annotations. Boxes: see README. -->
+      <div class="sub-head" data-reveal>
+        <h3 class="sub" id="photos">Team photos</h3>
+        <p>Open a photo for the full-size file.</p>
+      </div>
+
+      <ul class="strip-photos">
+        <li style="--ar: 1.778">
+          <figure class="frame shot" data-name="worlds-2026.jpg" data-reveal>
+            <div class="fm" aria-hidden="true"><span>F01 · worlds-2026.jpg</span></div>
+            <div class="fi">
+              <a href="assets/photos/worlds-2026.jpg"><img src="assets/photos/small/worlds-2026.jpg" srcset="assets/photos/small/worlds-2026.jpg 640w, assets/photos/worlds-2026.jpg 1200w" sizes="(min-width: 900px) 30vw, 55vw" width="1200" height="675" loading="lazy" decoding="async"
+                   alt="The team on stage wearing medals, holding two banners that read Division Champion, High School World Championship 2026"></a>
+              <span class="bxs" aria-hidden="true">
+                <span class="bx" style="--x:24.5%;--y:33%;--w:16%;--h:46%"><b>banner</b></span>
+                <span class="bx" style="--x:75%;--y:35%;--w:19.5%;--h:48%"><b>banner</b></span>
+              </span>
+            </div>
+            <figcaption>Division champions, VEX Worlds 2026</figcaption>
+          </figure>
+        </li>
+        <li style="--ar: 1.333">
+          <figure class="frame shot" data-name="team-2024-25.jpg" data-reveal>
+            <div class="fm" aria-hidden="true"><span>F02 · team-2024-25.jpg</span></div>
+            <div class="fi">
+              <a href="assets/photos/team-2024-25.jpg"><img src="assets/photos/small/team-2024-25.jpg" srcset="assets/photos/small/team-2024-25.jpg 640w, assets/photos/team-2024-25.jpg 1200w" sizes="(min-width: 900px) 22vw, 45vw" width="1200" height="900" loading="lazy" decoding="async"
+                   alt="Six team members in matching hoodies with a robot, two trophies and two banners: Division Champion at the World Championship and Tournament Champions at Space City"></a>
+            </div>
+            <figcaption>The team after the <span class="nowrap">2024–25</span> season</figcaption>
+          </figure>
+        </li>
+        <li style="--ar: 1.333">
+          <figure class="frame shot" data-name="state-champs-2026.jpg" data-reveal>
+            <div class="fm" aria-hidden="true"><span>F03 · state-champs-2026.jpg</span></div>
+            <div class="fi">
+              <a href="assets/photos/state-champs-2026.jpg"><img src="assets/photos/small/state-champs-2026.jpg" srcset="assets/photos/small/state-champs-2026.jpg 640w, assets/photos/state-champs-2026.jpg 1200w" sizes="(min-width: 900px) 22vw, 45vw" width="1200" height="900" loading="lazy" decoding="async"
+                   alt="A group of students outside a building holding two banners that read Tournament Champion, California Region 2 Championship 2026, with two robots on the pavement in front of them"></a>
+              <span class="bxs" aria-hidden="true">
+                <span class="bx" style="--x:27.5%;--y:68.5%;--w:12%;--h:16.5%"><b>robot</b></span>
+                <span class="bx" style="--x:36%;--y:72%;--w:14%;--h:23%"><b class="r">robot</b></span>
+              </span>
+            </div>
+            <figcaption>Tournament champions, California Region 2 Championship 2026</figcaption>
+          </figure>
+        </li>
+        <li style="--ar: 1.333">
+          <figure class="frame shot" data-name="berkeley-2025-robots.jpg" data-reveal>
+            <div class="fm" aria-hidden="true"><span>F04 · berkeley-2025-robots.jpg</span></div>
+            <div class="fi">
+              <a href="assets/photos/berkeley-2025-robots.jpg"><img src="assets/photos/small/berkeley-2025-robots.jpg" srcset="assets/photos/small/berkeley-2025-robots.jpg 640w, assets/photos/berkeley-2025-robots.jpg 1200w" sizes="(min-width: 900px) 22vw, 45vw" width="1200" height="900" loading="lazy" decoding="async"
+                   alt="Three robots and their trophies lined up behind Tournament Champion and Excellence Award banners spread on the ground"></a>
+              <span class="bxs" aria-hidden="true">
+                <span class="bx" style="--x:29.5%;--y:23%;--w:14.5%;--h:20%"><b>robot</b></span>
+                <span class="bx" style="--x:46%;--y:24.5%;--w:12.5%;--h:17%"><b>robot</b></span>
+                <span class="bx" style="--x:65%;--y:24%;--w:11%;--h:17%"><b>robot</b></span>
+              </span>
+            </div>
+            <figcaption>Tournament champions, One World Signature Event, Berkeley 2025</figcaption>
+          </figure>
+        </li>
+      </ul>
+
+      <!-- ---------- Worlds 2026: the Dome, the chapter's last frame ---------- -->
+      <div class="sub-head" data-reveal>
+        <h3 class="sub" id="worlds">Worlds 2026</h3>
+        <p>Math Division champions, on to the Dome.</p>
+      </div>
+
+      <!-- The Dome: the last frame of the chapter, shown at most at its native 1200px. From 900px
+           it is cropped to a widescreen band: the link (.crop-win) is that band, and the photo
+           with its labels (.crop-in) slides inside it. -->
+      <figure class="frame dome af" data-name="dome-stage-2026.jpg" data-reveal>
+        <div class="fm" aria-hidden="true"><span>dome-stage-2026.jpg</span><span>1200×900</span></div>
+        <div class="fi">
+          <a class="crop-win" href="assets/photos/dome-stage-2026.jpg">
+            <span class="crop-in">
+              <img src="assets/photos/dome-stage-2026.jpg" srcset="assets/photos/small/dome-stage-2026.jpg 640w, assets/photos/dome-stage-2026.jpg 1200w" sizes="(min-width: 1200px) 1200px, 100vw" width="1200" height="900" loading="lazy" decoding="async"
+                   alt="A dark arena under red stage lights, with rows of spectators facing big screens that read Finals and VEX Robotics World Championship 2026">
+              <span class="bxs" aria-hidden="true">
+                <span class="bx" style="--x:35.5%;--y:45.5%;--w:12.5%;--h:14.5%"><b>screen</b></span>
+                <span class="bx" style="--x:48.5%;--y:51.5%;--w:9.5%;--h:9%"><b class="d">screen</b></span>
+                <span class="bx" style="--x:58.5%;--y:49.5%;--w:7%;--h:11%"><b class="r">screen</b></span>
+              </span>
+            </span>
+          </a>
+          <p class="dome-title" aria-hidden="true"><span>Worlds 2026</span><span>In the Dome</span></p>
+        </div>
+        <figcaption>The Dome stage during finals, Worlds 2026</figcaption>
+      </figure>
+    </section>
+
+    <!-- ===================================================== 07 · HANDSHAKE (contact): plain and confident
+         Compact on purpose: after a nav click the email link sits above the fold at 1280×800 and
+         390×844. Beside it, the results card: built only from the ROBOTICS record above (keep its
+         figures in step with the totals line there, and claim nothing the record doesn't: its
+         "tournament wins" are the record's Tournament Champions titles; the headline is the
+         owner's framing of the 2025 Worlds result, "2nd of 20,000+ teams", as everywhere else). -->
+    <section class="ch contact" id="contact" aria-labelledby="contact-h" data-stage="07 Handshake" data-short="07 Link">
+      <header class="ch-head v-plain">
+        <p class="stage" aria-hidden="true"><span class="ix">07</span>Handshake</p>
+        <h2 class="giant" id="contact-h" data-reveal><span class="giant-w">Contact</span></h2>
+        <p class="lede" data-reveal>Questions about RW-Template, the papers, or something you’re building?</p>
+      </header>
+      <div class="contact-grid">
+        <ul class="contact-list" data-reveal>
+          <!-- The email address is stored ONLY here, split in two. site.js builds the mailto:
+               for every link marked data-mail. Without JS this link goes to GitHub. -->
+          <li class="c-mail"><a href="https://github.com/richardbwang" data-mail data-user="richardbojinwang2008" data-domain="gmail.com" data-mail-label="email me">get in touch</a> <span class="hint" data-mail-hint data-js-text="opens your mail app">via GitHub</span></li>
+          <li><a href="https://github.com/richardbwang">github.com/<wbr>richardbwang</a></li>
+          <li><a href="https://www.linkedin.com/in/richard-b-wang/">linkedin.com/in/<wbr>richard-b-wang</a></li>
+        </ul>
+        <div class="rcard" role="group" aria-labelledby="rcard-h" data-reveal>
+          <p class="rc-k" aria-hidden="true"><span>Results</span><span>1698V · Power Beans</span></p>
+          <p class="rc-head" id="rcard-h">World finalists, 2nd of 20,000+ teams, VEX&nbsp;Worlds&nbsp;2025</p>
+          <ul class="rc-score">
+            <li><b>7</b> tournament wins, <span class="nowrap">2024–26</span></li>
+            <li><b>5</b> Robot Skills Champion titles, <span class="nowrap">2024–26</span></li>
+            <li><b>3</b> Excellence Awards, <span class="nowrap">2024–26</span></li>
+            <li><b>5×</b> World Championship qualifier, <span class="nowrap">2022–2026</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================================================== FOOTER: the feed ends
+       As it comes into view the HUD powers down (site.js): the REC light goes out, the clock stops,
+       the stack reads complete, and the name, small, loses its features one by one. -->
+  <footer class="foot">
+    <div class="foot-in">
+      <p class="reprise" aria-hidden="true"><span class="rp" data-feat>Richard B. Wang</span></p>
+      <!-- "Stopped at 00:xx" fills a slot that is sized from the first paint (no layout shift). -->
+      <p class="eof" aria-hidden="true"><span class="eof-big"><i></i>End of feed</span><span class="eof-at" data-eof>Stopped</span></p>
+      <p>© 2026 Richard B. Wang · plain HTML, CSS and a little JS, no build step · <a class="nowrap" href="#top">back to top</a></p>
+    </div>
+  </footer>
+</body>
+</html>
