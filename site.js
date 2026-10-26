@@ -66,12 +66,18 @@
     if (!io || still()) showAll();
     else {
       var batch = [], flush = 0, waiting = $$("[data-reveal]"), sweepF = 0;
+      /* Read a block out, asking for its pictures first: a deep link can read a block out before
+         the sweep below has had a chance to ask for them. */
+      var reveal = function (el) {
+        $$('img[loading="lazy"]', el).forEach(function (img) { if (!img.closest(".r3d")) img.loading = "eager"; });
+        el.classList.add("is-in");
+      };
       var queue = function (el) {
         if (el._queued) return;
         el._queued = true; seen.unobserve(el); batch.push(el);
         if (!flush) flush = requestAnimationFrame(function () {
           batch.sort(function (a, b) { return a.getBoundingClientRect().top - b.getBoundingClientRect().top; });
-          batch.forEach(function (el, i) { el.style.setProperty("--d", Math.min(i, 6) * 0.07 + "s"); el.classList.add("is-in"); });
+          batch.forEach(function (el, i) { el.style.setProperty("--d", Math.min(i, 6) * 0.07 + "s"); reveal(el); });
           batch = []; flush = 0;
         });
       };
@@ -119,8 +125,8 @@
       document.addEventListener("focusin", function (e) {
         var r = e.target.closest && e.target.closest("[data-reveal]");
         var ch = e.target.closest && e.target.closest(".ch");
-        if (r) r.classList.add("is-in");
-        if (ch) $$("[data-reveal]", ch).forEach(function (el) { el.classList.add("is-in"); });
+        if (r) reveal(r);
+        if (ch) $$("[data-reveal]", ch).forEach(reveal);
       });
     }
   }
