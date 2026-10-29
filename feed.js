@@ -362,13 +362,30 @@
     draw(performance.now());
     readouts(0, performance.now());
   }
-  function knock() { /* a sharp, random knock: click or tap */
+  function knock(k) { /* a sharp, random knock: click or tap (k = 1), or the camera's own (k < 1) */
     var sgn = function () { return M.random() < 0.5 ? -1 : 1; };
-    V.x += sgn() * (260 + M.random() * 200); V.y += sgn() * (160 + M.random() * 160);
-    V.r += sgn() * (0.5 + M.random() * 0.5); V.s += 0.25;
+    k = k || 1;
+    V.x += sgn() * (260 + M.random() * 200) * k; V.y += sgn() * (160 + M.random() * 160) * k;
+    V.r += sgn() * (0.5 + M.random() * 0.5) * k; V.s += 0.25 * k;
     rings = 1; status = "Calibrating";
     kick();
   }
+  /* The camera knocks itself now and then (every 6-9 s while the name is on screen), so visitors
+     see the bias correction without having to find the drag. Never while the reader is handling
+     the name (or just did), never with motion paused or reduced, never off screen or in a
+     background tab: the timer only runs while all of that holds. */
+  var autoT = 0, handled = -1e9; /* when the reader last grabbed, clicked or tapped the name */
+  function autoKnock(first) {
+    if (autoT && !first) return; /* one already scheduled: don't push it back */
+    clearTimeout(autoT); autoT = 0;
+    if (!onScreen || document.hidden || still() || !ready) return;
+    autoT = setTimeout(function () {
+      autoT = 0;
+      if (onScreen && !document.hidden && !still() && ready && !drag && performance.now() - handled > 4000) knock(0.7);
+      autoKnock();
+    }, first || 6000 + M.random() * 3000);
+  }
+  function stopAuto() { clearTimeout(autoT); autoT = 0; }
   function local(e) { var r = hero.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
   function ignore(e) { return still() || !ready || (e.target.closest && e.target.closest("a, button, input, .hero-info")); }
 
@@ -397,6 +414,7 @@
     downType = e.pointerType;
     if (e.pointerType === "touch" || e.button !== 0 || ignore(e)) return;
     var q = local(e);
+    handled = performance.now();
     drag = { cx: e.clientX, cy: e.clientY, x: q.x, y: q.y, px: P.x, py: P.y, pr: P.r, t: performance.now(), vx: 0, vy: 0, vr: 0, moved: 0, id: e.pointerId };
     V.x = V.y = V.r = V.s = 0; rings = 1;
     try { hero.setPointerCapture(e.pointerId); } catch (err) {}
@@ -417,6 +435,7 @@
   /* Touch: a tap knocks (a click, so a scroll never does). */
   hero.addEventListener("click", function (e) {
     if (downType !== "touch" || ignore(e)) return;
+    handled = performance.now();
     knock();
   });
   /* Scrolling drags the camera a little (the outline only; the name's rings stay clear). */
@@ -430,13 +449,13 @@
 
   if ("IntersectionObserver" in window) new IntersectionObserver(function (es) {
     onScreen = es[es.length - 1].isIntersecting;
-    if (onScreen) { kick(); floor.go(); } else { if (raf) { cancelAnimationFrame(raf); raf = 0; } floor.stop(); }
+    if (onScreen) { kick(); floor.go(); autoKnock(); } else { if (raf) { cancelAnimationFrame(raf); raf = 0; } floor.stop(); stopAuto(); }
   }).observe(hero);
   document.addEventListener("visibilitychange", function () {
-    if (document.hidden) { if (raf) { cancelAnimationFrame(raf); raf = 0; } floor.stop(); } else { kick(); floor.go(); }
+    if (document.hidden) { if (raf) { cancelAnimationFrame(raf); raf = 0; } floor.stop(); stopAuto(); } else { kick(); floor.go(); autoKnock(); }
   });
   document.addEventListener("rbw:motion", function () {
-    if (still()) { settle(); floor.stop(); } else { kick(); floor.go(); }
+    if (still()) { settle(); floor.stop(); stopAuto(); } else { kick(); floor.go(); autoKnock(); }
   });
 
   /* Rebuild after a resize (width changes only: a phone's URL bar doesn't count). */
@@ -589,6 +608,7 @@
       rings = 1; status = "Calibrating";
       if (out.status) out.status.textContent = status;
       kick();
+      autoKnock(3000);
     });
   });
 })();
