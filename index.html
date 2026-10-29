@@ -201,7 +201,11 @@
          The detector switches on here: the first boxes on the page. The title is detected (its box
          arrives as a loose dashed guess and snaps on, then its class tag, then the corner features
          feed.js finds on the word), and each honor carries its class. Season-by-season robotics
-         results live in the ROBOTICS log; keep each result in one of the two. -->
+         results live in the ROBOTICS log; keep each result in one of the two.
+         Beside the list (under it on phones): the robot teaser, the 3D robot's own still with the
+         detector's box on it. It is the High Stakes robot (2024–25), from the 2025 World Finals
+         run: its caption ties it to the World Finalist line, NOT to the #1 Autonomous Skills line
+         (Nov 2025, Push Back season, another robot). Its link jumps to the 3D robot in Robotics. -->
     <section class="ch" id="honors" aria-labelledby="honors-h" data-stage="02 Detection" data-short="02 Det">
       <header class="ch-head v-detect">
         <p class="stage" aria-hidden="true"><span class="ix">02</span>Detection <span class="stage-k">· detector on</span></p>
@@ -209,6 +213,7 @@
         <p class="lede" data-reveal>The short list. The VEX results are with team 1698V; the full record is <a href="#results">further down</a>.</p>
       </header>
 
+      <div class="hon-grid">
       <ul class="credits">
         <li data-reveal><span class="cls" aria-hidden="true">robotics</span><span class="when">Nov 2025</span><strong>#1 in the world, VEX Autonomous Skills</strong> <span class="note">96 points</span></li>
         <li data-reveal><span class="cls" aria-hidden="true">robotics</span><span class="when">2025</span><strong>VEX Robotics World Finalist</strong> <span class="note">2nd of 20,000+ teams</span></li>
@@ -217,6 +222,30 @@
         <li data-reveal><span class="cls" aria-hidden="true">academic</span><span class="when">2026</span><strong>National Merit Finalist</strong> <span class="note">National Merit Scholarship, <span class="nowrap">2026–2030</span></span></li>
         <li data-reveal><span class="cls" aria-hidden="true">robotics</span><span class="when">2023, 2026</span><strong>2× VEX California State Champion</strong></li>
       </ul>
+
+      <!-- The robot teaser: the 3D robot's 3/4 still (transparent, on the openers' depth glow) and
+           the detector's box on it, where robot3d.js puts it at that pose (in % of the picture,
+           as on the still in ROBOTICS). One link (the caption's); its box covers the whole
+           figure, so the picture opens it too. Its words follow what the visitor will get:
+           "See it in 3D" where the 3D can load (html.r3d-pinnable, set by stages.js), "See it
+           up close" where the robot stays a still (no JS, reduced motion, Save-Data, no WebGL 2).
+           Each sits on its own line, so the swap never moves anything. -->
+      <figure class="frame hon-fig" data-name="hs-3q" data-no-fx data-reveal>
+        <div class="fm" aria-hidden="true"><span>cad · 1698V</span><span>worlds 2025</span></div>
+        <div class="fi">
+          <span class="hon-shot">
+            <picture>
+              <source type="image/webp" srcset="assets/robot/hs-3q-400.webp 400w, assets/robot/hs-3q-640.webp 640w, assets/robot/hs-3q-1040.webp 1040w" sizes="(min-width: 1100px) min(22vw, 300px), (min-width: 900px) 240px, 168px">
+              <img src="assets/robot/hs-3q-640.png" width="640" height="800" loading="lazy" decoding="async"
+                   alt="CAD render of 1698V’s High Stakes robot (2024–25): the drive base on six wheels, the X-braced lift towers, the hook conveyor with its red sprocket and the lift arm reaching up at the front.">
+            </picture>
+            <span class="hon-box" aria-hidden="true" style="--x0:8.3%;--y0:4.8%;--x1:89.9%;--y1:97.1%"><b>Robot · 1698V</b></span>
+          </span>
+        </div>
+        <figcaption><span class="hon-cap">1698V’s High Stakes robot, from our 2025 World Finals run.</span>
+          <a class="hon-go" href="#robotics"><span class="say-3d">See it in 3D</span><span class="say-still">See it up close</span><span class="sr-only">, in Robotics</span></a></figcaption>
+      </figure>
+      </div>
     </section>
 
     <!-- ===================================================== 03 · TRACKING (projects)
@@ -368,9 +397,11 @@
          Each role carries the class it was sorted into (research, engineering, startup, robotics),
          and the two leadership roles are a lighter group of their own at the end. Two roles have a
          small side figure: the Startup School photo (it opens the full file; Richard's face is in
-         it, so data-no-fx: no focus hunt, no lens) and 1698V's robot (it jumps to the 3D robot in
-         Robotics). One <li> per role; a role with a figure is li.has-fig, and --ar on the figure
-         is its frame's width ÷ height (the photo's own; the robot stands in a 4:3 frame like it). -->
+         it, so data-no-fx: no focus hunt, no lens) and 1698V's Worlds 2026 division champions
+         photo (it jumps to Robotics; data-no-fx too). One <li> per role; a role with a figure is
+         li.has-fig, and --ar on the figure is its frame's width ÷ height (4:3 for both: the
+         Startup School photo's own; the 16:9 Worlds photo is shown whole in the middle of its
+         4:3 frame, .xp-fit). The Worlds photo is not repeated in the Robotics photo strip. -->
     <section class="ch" id="experience" aria-labelledby="experience-h" data-stage="04 Classification" data-short="04 Cls">
       <header class="ch-head v-classify">
         <span class="old-id" id="now"></span><!-- the previous site's #now: old links land here, as #experience does -->
@@ -416,16 +447,13 @@
             <p>Architected the autonomous stack: PID, odometry, IMU fusion, motion profiling, path planning. Mentored three teams. <a href="#results">Results&nbsp;below</a>.</p>
             <ul class="chips" aria-label="Stack"><li>C++</li><li>VEX V5</li></ul>
           </div>
-          <figure class="frame xp-fig xp-robot" data-name="hs-3q" data-no-fx style="--ar: 1.333">
-            <div class="fm" aria-hidden="true"><span>cad · 1698V</span></div>
+          <figure class="frame xp-fig xp-fit" data-name="worlds-2026.jpg" data-no-fx style="--ar: 1.333">
+            <div class="fm" aria-hidden="true"><span>worlds-2026.jpg</span></div>
             <div class="fi">
-              <a href="#robotics"><picture>
-                <source type="image/webp" srcset="assets/robot/hs-3q-400.webp 400w, assets/robot/hs-3q-640.webp 640w" sizes="(min-width: 900px) 160px, 90px">
-                <img src="assets/robot/hs-3q-640.png" width="640" height="800" loading="lazy" decoding="async"
-                     alt="CAD render of 1698V’s High Stakes robot (2024–25). Opens the robot in Robotics.">
-              </picture></a>
+              <a href="#robotics"><img src="assets/photos/small/worlds-2026.jpg" srcset="assets/photos/small/worlds-2026.jpg 640w, assets/photos/worlds-2026.jpg 1200w" sizes="(min-width: 900px) 267px, 144px" width="1200" height="675" loading="lazy" decoding="async"
+                   alt="The team on stage with two Division Champion banners at the 2026 VEX World Championship. Opens Robotics."></a>
             </div>
-            <figcaption>Up close in Robotics</figcaption>
+            <figcaption>Division champions, Worlds 2026</figcaption>
           </figure>
         </li>
       </ol>
@@ -744,35 +772,24 @@
       </ul>
 
       <!-- ---------- Team photos: a contact strip ----------
-           Four frames, one per season or event. Justified rows: --ar on each <li> = width ÷ height,
+           Three frames, one per season or event (the Worlds 2026 photo is Experience's 1698V
+           figure, so it isn't repeated here). Justified rows: --ar on each <li> = width ÷ height,
            so every photo is shown whole and photos in a row share a height (boxes stay on their
-           objects). The page shows the ~640px copy in assets/photos/small/; clicking opens the full
-           file. Three of the four carry hand-placed annotations. Boxes: see README. -->
+           objects). One row of three from 700px; on phones the first photo takes the row and the
+           other two share the next. The page shows the ~640px copy in assets/photos/small/;
+           clicking opens the full file. Two of the three carry hand-placed annotations. Boxes:
+           see README. -->
       <div class="sub-head" data-reveal>
         <h3 class="sub" id="photos">Team photos</h3>
         <p>Open a photo for the full-size file.</p>
       </div>
 
       <ul class="strip-photos">
-        <li style="--ar: 1.778">
-          <figure class="frame shot" data-name="worlds-2026.jpg" data-reveal>
-            <div class="fm" aria-hidden="true"><span>F01 · worlds-2026.jpg</span></div>
-            <div class="fi">
-              <a href="assets/photos/worlds-2026.jpg"><img src="assets/photos/small/worlds-2026.jpg" srcset="assets/photos/small/worlds-2026.jpg 640w, assets/photos/worlds-2026.jpg 1200w" sizes="(min-width: 900px) 30vw, 55vw" width="1200" height="675" loading="lazy" decoding="async"
-                   alt="The team on stage wearing medals, holding two banners that read Division Champion, High School World Championship 2026"></a>
-              <span class="bxs" aria-hidden="true">
-                <span class="bx" style="--x:24.5%;--y:33%;--w:16%;--h:46%"><b>banner</b></span>
-                <span class="bx" style="--x:75%;--y:35%;--w:19.5%;--h:48%"><b>banner</b></span>
-              </span>
-            </div>
-            <figcaption>Division champions, VEX Worlds 2026</figcaption>
-          </figure>
-        </li>
         <li style="--ar: 1.333">
           <figure class="frame shot" data-name="team-2024-25.jpg" data-reveal>
-            <div class="fm" aria-hidden="true"><span>F02 · team-2024-25.jpg</span></div>
+            <div class="fm" aria-hidden="true"><span>F01 · team-2024-25.jpg</span></div>
             <div class="fi">
-              <a href="assets/photos/team-2024-25.jpg"><img src="assets/photos/small/team-2024-25.jpg" srcset="assets/photos/small/team-2024-25.jpg 640w, assets/photos/team-2024-25.jpg 1200w" sizes="(min-width: 900px) 22vw, 45vw" width="1200" height="900" loading="lazy" decoding="async"
+              <a href="assets/photos/team-2024-25.jpg"><img src="assets/photos/small/team-2024-25.jpg" srcset="assets/photos/small/team-2024-25.jpg 640w, assets/photos/team-2024-25.jpg 1200w" sizes="(min-width: 700px) 30vw, 92vw" width="1200" height="900" loading="lazy" decoding="async"
                    alt="Six team members in matching hoodies with a robot, two trophies and two banners: Division Champion at the World Championship and Tournament Champions at Space City"></a>
             </div>
             <figcaption>The team after the <span class="nowrap">2024–25</span> season</figcaption>
@@ -780,9 +797,9 @@
         </li>
         <li style="--ar: 1.333">
           <figure class="frame shot" data-name="state-champs-2026.jpg" data-reveal>
-            <div class="fm" aria-hidden="true"><span>F03 · state-champs-2026.jpg</span></div>
+            <div class="fm" aria-hidden="true"><span>F02 · state-champs-2026.jpg</span></div>
             <div class="fi">
-              <a href="assets/photos/state-champs-2026.jpg"><img src="assets/photos/small/state-champs-2026.jpg" srcset="assets/photos/small/state-champs-2026.jpg 640w, assets/photos/state-champs-2026.jpg 1200w" sizes="(min-width: 900px) 22vw, 45vw" width="1200" height="900" loading="lazy" decoding="async"
+              <a href="assets/photos/state-champs-2026.jpg"><img src="assets/photos/small/state-champs-2026.jpg" srcset="assets/photos/small/state-champs-2026.jpg 640w, assets/photos/state-champs-2026.jpg 1200w" sizes="(min-width: 700px) 30vw, 46vw" width="1200" height="900" loading="lazy" decoding="async"
                    alt="A group of students outside a building holding two banners that read Tournament Champion, California Region 2 Championship 2026, with two robots on the pavement in front of them"></a>
               <span class="bxs" aria-hidden="true">
                 <span class="bx" style="--x:27.5%;--y:68.5%;--w:12%;--h:16.5%"><b>robot</b></span>
@@ -794,9 +811,9 @@
         </li>
         <li style="--ar: 1.333">
           <figure class="frame shot" data-name="berkeley-2025-robots.jpg" data-reveal>
-            <div class="fm" aria-hidden="true"><span>F04 · berkeley-2025-robots.jpg</span></div>
+            <div class="fm" aria-hidden="true"><span>F03 · berkeley-2025-robots.jpg</span></div>
             <div class="fi">
-              <a href="assets/photos/berkeley-2025-robots.jpg"><img src="assets/photos/small/berkeley-2025-robots.jpg" srcset="assets/photos/small/berkeley-2025-robots.jpg 640w, assets/photos/berkeley-2025-robots.jpg 1200w" sizes="(min-width: 900px) 22vw, 45vw" width="1200" height="900" loading="lazy" decoding="async"
+              <a href="assets/photos/berkeley-2025-robots.jpg"><img src="assets/photos/small/berkeley-2025-robots.jpg" srcset="assets/photos/small/berkeley-2025-robots.jpg 640w, assets/photos/berkeley-2025-robots.jpg 1200w" sizes="(min-width: 700px) 30vw, 46vw" width="1200" height="900" loading="lazy" decoding="async"
                    alt="Three robots and their trophies lined up behind Tournament Champion and Excellence Award banners spread on the ground"></a>
               <span class="bxs" aria-hidden="true">
                 <span class="bx" style="--x:29.5%;--y:23%;--w:14.5%;--h:20%"><b>robot</b></span>

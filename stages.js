@@ -930,7 +930,7 @@
         busy = false;
         if (dead) return ctrl.teardown();
         /* reduced motion turned on while it loaded: keep the still */
-        if (reduced()) { ctrl.teardown(); mode = "still"; dead = true; setPin(false); bLoad.hidden = true; stillEx(ex); return; }
+        if (reduced()) { ctrl.teardown(); mode = "still"; dead = true; root.classList.add("r3d-off"); setPin(false); bLoad.hidden = true; stillEx(ex); return; }
         live = ctrl;
         stillEx(ex); /* under the live view: the still you were looking at (its alt text describes the robot) */
         fig.classList.add("is-live");
@@ -951,6 +951,7 @@
     }
     function fallback() {
       busy = false; dead = true;
+      root.classList.add("r3d-off"); /* the Honors teaser now says "See it up close" */
       dropProbe();
       var hadFocus = document.activeElement === view;
       if (live) { live.teardown(); live = null; }

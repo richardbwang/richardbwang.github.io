@@ -52,8 +52,8 @@ tracker on the drone clip (the frame says so). A **hollow rose** tag on a box wi
 handles is a hand-placed ground-truth label. The viewer and the MCL panel are labelled as
 illustrations. **Never a box or a label on a person, and nothing on Richard's own face:** the
 About calibration happens around the portrait, never on it, and the photos that show his face
-(the portrait, Startup School: `data-no-fx`) get no focus hunt and no lens (nor do the two
-project screenshots or the robot's thumbnail in Experience: they're `data-no-fx` too, to stay clean). The one effect that
+(the portrait, Startup School, the Worlds 2026 photo in Experience: `data-no-fx`) get no focus hunt and no lens (nor do the two
+project screenshots or the robot teaser in Honors: they're `data-no-fx` too, to stay clean). The one effect that
 can pass over people elsewhere is the false-colour lens, and only while a mouse hovers a photo.
 
 **One home for live status.** The REC light, the stage and the clock live in the top bar below
@@ -66,11 +66,11 @@ counts and per-title tracker readouts were cut.
 |---|---|---|---|---|
 | 00 | Raw feed | `#top` (hero) | the depth floor behind the name; the knock when the typeface lands; grab and fling | name (`h1`), tagline, readout (study · now · papers · record: the #1 Autonomous Skills rank and the World Finalist result, 2nd of 20,000+ teams), email · GitHub · LinkedIn (all in the first frame) |
 | 01 | Calibration | `#about` | graticule and frame edges bowed by a lens, around the portrait; checkerboard corners found; lines straighten | portrait (always clean), statement, then the proof paragraph: 1698V's two world-level results, RW-Template's numbers, the two IEEE papers, iLab |
-| 02 | Detection | `#honors` | the first boxes on the page: the title is detected (a dashed guess that snaps on, its `text` tag, corner features on the word); each honor carries its class | the short list, strongest first (#1 Autonomous Skills, World Finalist, USACO Gold, 2× division champion, National Merit Finalist, 2× California State Champion): two columns of three on wide screens (title + all six in one 1280×800 screen) |
+| 02 | Detection | `#honors` | the first boxes on the page: the title is detected (a dashed guess that snaps on, its `text` tag, corner features on the word); each honor carries its class | the short list, strongest first (#1 Autonomous Skills, World Finalist, USACO Gold, 2× division champion, National Merit Finalist, 2× California State Champion): two columns of three in columns 1–9 on wide screens (title + all six in one 1280×800 screen); beside them (10–12) the robot teaser: the 3D robot's 3/4 still with the detector's box (`ROBOT · 1698V`), captioned as the High Stakes robot from the 2025 World Finals run, linking to `#robotics`. It belongs to the World Finalist line, never the #1 line (Nov 2025, Push Back season, another robot): wide, it sits beside World Finalist; at 900–1099px it starts on that line's row; on phones and tablets it's a compact card under the list |
 | 03 | Tracking | `#projects` | the title trails a tracked box as you scroll; each project name's box shows on hover/focus; the drone clip's tracked boxes | RW-Template (live stars, its simulator's replay as a framed screenshot that opens the replays; below 900px it comes right after the stats, before the lede), drone-perception (tracked clip), Toph (`#toph`: the LavaLab role links to it; its dashboard as a framed screenshot that opens the live demo, a closer crop on phones and at 900–1149px, where the whole dashboard would be too small to read or too short for its column), DueSync (compact, text only), also on GitHub (Competitive-Programming, one line). Media alternates sides: right, left, right |
-| 04 | Classification | `#experience` | the classifier's label set lands under the title, one tag at a time; every role carries its class tag (research, engineering, startup, robotics), landing just after its line | four roles, newest first (iLab, LavaLab, YC Startup School, 1698V), two lines each from 1100px (at most three at 900–1099px and on a 390px phone, four at 320–360px); Startup School with its photo and 1698V with its robot (it jumps to the robot in Robotics) as small side figures; from 900px every role is set the same way (dates in columns 1–2, the role, its lines and its chips in 3–9, a figure in 10–12); then "Leadership", two lighter one-liners (Power Beans Foundation, varsity football) |
+| 04 | Classification | `#experience` | the classifier's label set lands under the title, one tag at a time; every role carries its class tag (research, engineering, startup, robotics), landing just after its line | four roles, newest first (iLab, LavaLab, YC Startup School, 1698V), two lines each from 1100px (at most three at 900–1099px and on a 390px phone, four at 320–360px); Startup School with its photo and 1698V with the Worlds 2026 division-champions photo (it jumps to Robotics; it's no longer in the Robotics photo strip) as small side figures; from 900px every role is set the same way (dates in columns 1–2, the role, its lines and its chips in 3–9, a figure in 10–12); then "Leadership", two lighter one-liners (Power Beans Foundation, varsity football) |
 | 05 | Robustness | `#papers` | the title arrives lightly degraded and clears in under a second; the conditions viewer | viewer + readout panel, both papers with "copy bibtex" |
-| 06 | Localization | `#robotics` | the opener: the 1698V robot in 3D, read out of a depth point cloud by a scan line, detected, turned under tracked features and a depth pass, taken apart into an exploded drawing and driven off as you scroll; the title is localized from particles; MCL on a Push Back field beside the results | the 3D robot + its parts list and caption, then the log's lede, log + totals, links (the log is `#results`: the "Results below" and "further down" links land on it), MCL, autons (the Dome R16 clip, then the red/blue pair), two team videos, a four-photo strip (F01–F04), then the Worlds 2026 sub-head straight into the Dome |
+| 06 | Localization | `#robotics` | the opener: the 1698V robot in 3D, read out of a depth point cloud by a scan line, detected, turned under tracked features and a depth pass, taken apart into an exploded drawing and driven off as you scroll; the title is localized from particles; MCL on a Push Back field beside the results | the 3D robot + its parts list and caption, then the log's lede, log + totals, links (the log is `#results`: the "Results below" and "further down" links land on it), MCL, autons (the Dome R16 clip, then the red/blue pair), two team videos, a three-photo strip (F01–F03: the Worlds 2026 stage photo is Experience's 1698V figure, so it isn't repeated here), then the Worlds 2026 sub-head straight into the Dome |
 | 07 | Handshake | `#contact` | plain, compact: the email link is in the first screen after a nav click | email (assembled by JS), GitHub, LinkedIn, results card (headed by the 2025 World Finals result) |
 | — | Feed stopped | footer | REC light out, clock stopped, stack complete, the name loses its features | © line, back to top |
 
@@ -227,6 +227,8 @@ shader chunk names `robot3d.js` patches: `worldpos_vertex`, `clipping_planes_fra
 3. In `index.html`, point the figure at it: `data-r3d` (the entry's key), `data-glb` and
    `data-bytes` (the file's size), and swap the stills, their alt text, the box's
    `--x0/--y0/--x1/--y1`, the exploded callouts (`.r3d-slabs`), the parts list and the caption.
+   The Honors teaser (`.hon-fig`) shows the same still and box: swap them there too, and reword
+   its caption and meta strip for that robot's own season and result (facts only).
 4. Render its stills with `robot3d.js` (so they match the live view): serve the site, open a blank
    page on it with the importmap, and run, with the figure markup present:
 
@@ -253,12 +255,27 @@ shader chunk names `robot3d.js` patches: `worldpos_vertex`, `clipping_planes_fra
   `<span class="is-now">now</span>`.
 * **A role's side figure:** give the `<li>` `class="has-fig"` and end it with a
   `<figure class="frame xp-fig" style="--ar: 1.333">` (copy the Startup School one). Both figures
-  are 4:3 frames of one height; a picture of another shape sits in the middle of its frame on a
-  dark ground (as the robot does, `.xp-robot`). A photo with Richard's face gets `data-no-fx`.
+  are 4:3 frames of one height; a picture of another shape is shown whole in the middle of its
+  frame on the dark ground, nothing cropped (as the 16:9 Worlds 2026 photo is: add `xp-fit` to the
+  figure). A photo with Richard's face gets `data-no-fx`. A figure that links inside the page
+  (1698V's, to `#robotics`) gets a short caption (wide screens only) with a lime ↓, and its alt
+  text ends with where it goes ("… Opens Robotics.").
   From 900px every role, with a figure or without, sets its role, lines and chips one under the
   other in columns 3–9 (its dates in 1–2), and a figure at the top of 10–12, level with the role;
   so the roles, the lines and the chips each start on one edge all the way down, and Leadership's
   lines on it too.
+* **The robot teaser (Honors):** `<figure class="frame hon-fig">` after the list, inside
+  `.hon-grid`. It reuses the 3D robot's 3/4 still (`assets/robot/hs-3q-*`, 640×800 / 1040×1300,
+  WebP with the PNG fallback) and the detector box's place on it (`--x0/--y0/--x1/--y1`, the same
+  numbers as `.r3d-sbox` in ROBOTICS). Its caption is a fact about that robot only: "1698V’s High
+  Stakes robot, from our 2025 World Finals run." Keep it tied to the World Finalist line: never
+  move it next to, or word it as, the #1 Autonomous Skills result (Nov 2025, the Push Back
+  season, a different robot). Its one link is the caption's (`.hon-go`, to `#robotics`; its box
+  covers the whole figure, so the picture opens it too); it reads "See it in 3D" where the 3D can
+  load (`html.r3d-pinnable`, set by `stages.js`) and "See it up close" (also once the 3D is refused
+  or fails to load: `stages.js` then sets `html.r3d-off`) where the robot stays a
+  still (no JS, reduced motion, Save-Data, no WebGL 2), each on its own line, so the swap moves
+  nothing. If the honors change, recheck the nav jump at 1280×800 (title + all six honors).
 * **Leadership:** the lighter list after the roles (`.xp-lead`): dates, then one sentence (`.xl`):
   the role in bold running on into its line after an em dash, lowercase (`— a nonprofit …`).
 * **A project screenshot:** a `<figure class="frame ui-shot">` (the dark mat and the corner marks
@@ -297,10 +314,13 @@ shader chunk names `robot3d.js` patches: `worldpos_vertex`, `clipping_planes_fra
 Copy a `<li>` in `.strip-photos`. Put the full file in `assets/photos/` and a ~640px copy in
 `assets/photos/small/`, set `width`/`height` to the full file's pixel size, and `--ar` on the
 `<li>` to width ÷ height. The strip is justified rows: photos in a row share a height and nothing
-is cropped, so labels stay on their objects. It is sized for its four frames (two rows of two
-below 900px, one row from 900px, each filling the measure; style.css section 11): with a fifth,
-check the rows, and if a short last row would stretch, add back the filler the comment there
-gives. Number the meta strip (`F05 · name.jpg`). If the
+is cropped, so labels stay on their objects. It is sized for its three frames (below 700px the
+first takes the whole row and the other two share the next; from 700px one row of three, each
+row filling the measure; style.css section 11): with a fourth, check the rows (and drop the
+`li:first-child` full-row rule if two rows of two read better), and if a short last row would
+stretch, add back the filler the comment there gives. Update each photo's `sizes` to the width
+it now shows at. Number the meta strip (`F04 · name.jpg`). A photo already shown elsewhere on the
+page (the Worlds 2026 stage photo is Experience's 1698V figure) doesn't go in the strip too. If the
 photo shows Richard's face, add `data-no-fx` to its `<figure>` (no lens, no `af` focus hunt).
 
 Labels are plain spans, positioned in percent of the photo:
@@ -398,7 +418,17 @@ dimmed.
 
 **Detection (02).** The detector switches on at Honors: the title's box arrives as a loose dashed
 guess and snaps on, then its `text` tag, then the corner features (`feed.js`'s Shi–Tomasi
-detector) light on the word; each honor's class tag lands just after its line.
+detector) light on the word; each honor's class tag lands just after its line. Beside the list,
+the robot teaser gets the same treatment: the 3D robot's 3/4 still (a transparent render on the
+openers' plum depth glow, its sides faded out) with a lime box that arrives as a dashed guess and
+snaps on, then its solid tag `ROBOT · 1698V` (machine output, no score; CSS only, section 14 of
+`style.css`; with reduced motion or no JS it is simply there). The frame's meta strip reads
+`CAD · 1698V` / `WORLDS 2025`, echoing the World Finalist line beside it. Wide (1100px+) the
+honors take columns 1–9 (set a little smaller and tighter than before the teaser came) and the
+teaser 10–12, its picture 88% of the column so the whole figure ends level with the list; at
+900–1099px (one honor a row) the honors share their rows with the grid (subgrid) so the teaser
+starts on the World Finalist row; below 900px it's a compact card under the list, the picture
+(124–176px wide) beside its caption.
 
 **Tracking (03).** One exponentially smoothed copy of the scroll position is the "tracker"; each
 tracked box is drawn at it, so it trails its word by the tracker's lag (capped at 80px) and settles
@@ -407,13 +437,15 @@ when you stop. The chapter title's box is always on; a project name's box shows 
 **Classification (04).** Experience's title is set right with its lede on the left, and under it
 the classifier's label set (research, engineering, startup, robotics, leadership) lands one tag at a
 time; each role's own class tag lands just after its line. The two side figures are 4:3 frames of
-one height (the photo whole; the robot's transparent render standing on the openers' depth glow,
-its floor's seams fading out at the picture's sides). From 900px every role is built the same
+one height, the same size and style: Startup School's photo (4:3, whole) and 1698V's Worlds 2026
+photo (the team on stage with the two Division Champion banners; 16:9, shown whole in the middle
+of its frame on the dark ground, `.xp-fit`, so no one at the edges is cut off). From 900px every role is built the same
 way: the dates in columns 1–2, the role, its lines and its chips stacked in 3–9, a figure (if any)
 in 10–12, so each starts on one edge all the way down. On wide screens the opener is compact (as
-Honors'), so a nav jump shows the first two roles whole. The robot's caption
-("Up close in Robotics") and its alt text promise only what every mode has: no-JS, reduced motion
-and Save-Data visitors get the still, not the 3D.
+Honors'), so a nav jump shows the first two roles whole. The Worlds photo links to `#robotics`;
+its caption ("Division champions, Worlds 2026 ↓", wide screens only) and its alt text ("The team
+on stage with two Division Champion banners at the 2026 VEX World Championship. Opens Robotics.")
+say what it shows and where it goes.
 
 **The project screenshots.** RW-Template's simulator and Toph's dashboard are light UIs, so each
 sits on a dark mat inside its frame, under four lime viewfinder corner marks, with a soft shadow
@@ -499,16 +531,18 @@ width reserved from the first paint, so it never moves the footer.
 * **Print:** `style.css` section 17. White paper, no HUD, rail, canvases, overlays or clip
   controls, every reveal shown (with the class tags, in grey, and the key photos in focus), clips
   as their posters, the robot as its still on a small dark ground (light aluminium vanishes on
-  white), external links print their address.
+  white; the Honors teaser too, small, under the list, without its box or its in-page link),
+  external links print their address.
 
 ## Performance notes
 
 * No `.mp4` (and no poster) loads at page load. Clips use `preload="none"` until they near the
   viewport; posters are lazy `<img>`s.
-* The project screenshots and Experience's two side figures are lazy too, with `width`/`height`
-  set and `srcset`/`sizes`, so a screen gets the 640 or the 1200 file it needs (the screenshots:
-  WebP 15–35 KB, JPEG fallback; Toph's closer crop 18 KB; the Startup School thumbnail 44 KB; the
-  robot's 400px WebP). Inside a block that hasn't been read out yet the browser can't see them, so
+* The project screenshots, Experience's two side figures and the Honors robot teaser are lazy too,
+  with `width`/`height` set and `srcset`/`sizes`, so a screen gets the file it needs (the
+  screenshots: WebP 15–35 KB, JPEG fallback; Toph's closer crop 18 KB; the Startup School
+  thumbnail 44 KB; the Worlds 2026 photo's 640px copy 47 KB; the teaser's 400px WebP, 60 KB, on
+  1x screens and on phones, the 640px one on 2x screens from 900px wide). Inside a block that hasn't been read out yet the browser can't see them, so
   `site.js` asks for them 1200px ahead (see "Reveals"). Checked in headless Chrome (Oct 26, 2026,
   scrolling in 100px steps, down and back up): each, the Dome photo, the gallery strip, the project
   screenshots, the Experience figures and the clip posters, is requested 1,050–1,210px before its
@@ -557,9 +591,12 @@ flashes faster than 3 times a second.
 * Heading names are clean: the 02 title's "text" tag is an `aria-hidden` span (the heading reads
   "Honors"), and the arrows after links are CSS content with empty alt text (`content: "↗" / ""`).
 * Linked pictures are named by their alt text, which ends with where they go: the two project
-  screenshots ("… Opens the simulator replays." / "… Opens the live demo.") and the robot's
-  thumbnail in Experience ("… Opens the robot in Robotics."). The class tags and the label set
-  are `aria-hidden`.
+  screenshots ("… Opens the simulator replays." / "… Opens the live demo.") and the Worlds 2026
+  photo in Experience ("… Opens Robotics."). The Honors robot teaser's picture has its own alt
+  text (what the robot is) and its one link is a real text link in the caption ("See it in 3D,
+  in Robotics" / "See it up close, in Robotics"; the last words are `sr-only`), with the lime
+  focus ring on the link and on the frame. The class tags, the label set and the teaser's
+  detector box are `aria-hidden`.
 * Each "copy bibtex" button has its own name ("Copy BibTeX for the IEEE ICCAS 2025 paper").
 * `scroll-padding-top` clears the HUD and `scroll-padding-bottom` clears the phone nav, so keyboard
   focus never lands under a fixed bar.
@@ -590,7 +627,8 @@ flashes faster than 3 times a second.
   stand-in font).
 - **Nav jumps:** at 1280×800 and 390×844, "Contact" shows the email link without scrolling, also on
   a first visit while the 3D is still downloading and from a deep link (`/#contact`); at 1280×800
-  "Honors" shows all six honors; "Results below" (Experience) lands on the results log. A deep link on a
+  "Honors" shows the title and all six honors, with the robot teaser beside them (measured Oct
+  29, 2026: title 146–279, the honors down to y = 767, the teaser to 759); "Results below" (Experience) lands on the results log. A deep link on a
   cold load (`/#papers`, fonts not cached) ends on the stage label: once the fonts and the titles
   are in, `site.js` lands it again if the reader hasn't touched the page. The old `/#now` lands
   on Experience exactly as `/#experience` does: on a fresh load, with JS off, and when the hash
@@ -628,6 +666,9 @@ flashes faster than 3 times a second.
   current; the RW-Template card doesn't claim team adoption numbers (it shows release downloads);
   the World Finals result reads "2nd of 20,000+ teams" everywhere (hero record line, About,
   Honors, the 3D caption and its second tag, the results log, the Contact card: the owner's
-  framing, as on his resume), and "823" appears nowhere:
+  framing, as on his resume); the Honors robot teaser says only what that robot is (the High
+  Stakes robot, 2024–25, from the 2025 World Finals run) and sits with the World Finalist line,
+  never with the #1 Autonomous Skills line (Nov 2025, Push Back, another robot); the Worlds 2026
+  stage photo is shown once (Experience), not again in the strip; and "823" appears nowhere:
   `grep -rnI --exclude=README.md --exclude-dir=vendor 823 .` finds nothing.
 - **Print preview:** white pages, no HUD or canvases.

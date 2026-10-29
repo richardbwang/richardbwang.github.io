@@ -621,16 +621,16 @@ h2.stage { font-weight: 400; font-size: 14px; color: var(--paper); } /* a real h
 .org { display: block; margin-top: 6px; font: 400 16px/1.35 var(--f-sans); color: var(--muted); }
 .what p { max-width: 62ch; text-wrap: pretty; } /* (no one-word last line where the browser can help it) */
 .what .chips { margin-top: 12px; }
-/* The side figures: two small 4:3 frames of one size (--fh tall, --ar wide): the photo whole, and
-   the robot, a transparent render, standing in the middle of its frame on the openers' depth
-   glow (its floor's dotted seams fade out at the picture's sides). */
+/* The side figures: two small 4:3 frames of one size (--fh tall, --ar wide): the Startup School
+   photo whole, and the 16:9 Worlds 2026 photo whole too, in the middle of its frame on the dark
+   ground (.xp-fit: nothing cropped, no one cut off at the edges). Only the Worlds photo has a
+   caption (wide screens), with a lime ↓: its link jumps down to Robotics. */
 .xp-fig { --fh: 108px; width: calc(var(--fh) * var(--ar)); }
 .xp-fig .fi { height: var(--fh); }
 .xp-fig .fi a, .xp-fig picture { display: block; height: 100%; }
 .xp-fig .fi img { width: 100%; height: 100%; object-fit: cover; }
-.xp-robot .fi { background: radial-gradient(70% 55% at 50% 62%, rgba(147, 38, 103, 0.3), transparent 72%), radial-gradient(60% 40% at 60% 20%, rgba(66, 10, 104, 0.3), transparent 72%), var(--ink-1); }
-.xp-robot .fi img { width: auto; margin: 0 auto; -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent); mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent); }
-.xp-fig figcaption { margin-top: 8px; font-size: 14px; line-height: 1.3; }
+.xp-fit .fi img { object-fit: contain; }
+.xp-fig figcaption { margin-top: 8px; font-size: 14px; line-height: 1.3; text-wrap: balance; }
 .xp-fig figcaption::after { content: " ↓"; content: " ↓" / ""; color: var(--sig); }
 @media (hover: hover) { .xp-fig .fi > a:hover { outline: 1.5px solid var(--sig); outline-offset: -1.5px; } }
 @media (max-width: 899px) {
@@ -639,7 +639,7 @@ h2.stage { font-weight: 400; font-size: 14px; color: var(--paper); } /* a real h
   .has-fig .what { grid-column: 1 / -1; }
   .has-fig .xp-fig { grid-column: 2; grid-row: 1 / 3; align-self: start; }
   .xp-fig .fm { display: none; }
-  .xp-fig figcaption { display: none; } /* the role's own line says it; the robot's link says where it goes */
+  .xp-fig figcaption { display: none; } /* the role's own line says it; the photo's link says where it goes */
 }
 /* Small phones: the figure sits beside the tag and dates only, a little smaller, and the role takes
    the full width under them (beside a figure it would break every other word). */
@@ -708,22 +708,84 @@ h2.stage { font-weight: 400; font-size: 14px; color: var(--paper); } /* a real h
   .credits strong, .credits .note { grid-column: 1 / -1; }
 }
 @media (min-width: 900px) and (max-width: 1099px) {
-  .credits li { grid-template-columns: minmax(0, 2fr) minmax(0, 2fr) minmax(0, 8fr); align-items: baseline; }
+  .credits li { grid-template-columns: minmax(0, 2fr) max-content minmax(0, 8fr); align-items: baseline; }
   .credits .cls { grid-column: 1; grid-row: 1 / 3; }
-  .credits .when { grid-column: 2; grid-row: 1 / 3; text-align: right; }
+  .credits .when { grid-column: 2; grid-row: 1 / 3; text-align: right; white-space: nowrap; } /* "2025, 2026" on one line */
   .credits strong, .credits .note { grid-column: 3; }
 }
-/* Wide: two columns of three, and a more compact opener, so a nav jump to Honors shows the
-   title (with its detector box and tag) and all six honors in one 1280×800 screen. */
+/* Wide: two columns of three in columns 1–9 (the robot teaser takes 10–12, below), set a little
+   smaller and tighter than before the teaser came, and a more compact opener, so a nav jump to
+   Honors still shows the title (with its detector box and tag) and all six honors in one
+   1280×800 screen. */
 @media (min-width: 1100px) {
   #honors .ch-head { margin-bottom: 32px; }
   #honors .giant { --span: 0.4; margin-top: 22px; }
-  .credits { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 48px; border-bottom: 0; }
-  .credits li { grid-template-columns: auto minmax(0, 1fr); align-content: start; align-items: center; gap: 10px 16px; padding: 15px 0 16px; border-bottom: 1px solid var(--line); margin-bottom: -1px; }
+  .credits { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px; border-bottom: 0; }
+  .credits li { grid-template-columns: auto minmax(0, 1fr); align-content: start; align-items: center; gap: 10px 16px; padding: 13px 0 14px; border-bottom: 1px solid var(--line); margin-bottom: -1px; }
   .credits .when { grid-column: 2; grid-row: 1; padding-top: 0; }
   .credits strong, .credits .note { grid-column: 1 / -1; }
-  .credits strong { font-size: clamp(32px, 3vw, 44px); }
+  .credits strong { font-size: clamp(30px, 2.75vw, 38px); }
   .credits .note { font-size: 16px; }
+}
+/* The robot teaser (02): the 3D robot's 3/4 still, a transparent render, on the openers' depth
+   glow (its floor's dotted seams fade out at the picture's sides), with the detector's box on it
+   (machine output: solid lime tag, no score; a band above the picture holds the tag). It arrives
+   as the title's box does: a loose dashed guess that snaps on (section 14). The caption's link
+   is the figure's one link, and its box (::before) covers the whole figure.
+   Wide (1100px+): the honors take columns 1–9 (still two columns of three) and the teaser 10–12,
+   beside the World Finalist line, so a nav jump still shows the title and all six honors in a
+   1280×800 screen. 900–1099px: the list, and the teaser in a column beside it. Phones and
+   tablets: a compact card under the list, the picture beside its caption. */
+.hon-fig .fi {
+  padding-top: 30px;
+  background: radial-gradient(70% 55% at 50% 62%, rgba(147, 38, 103, 0.3), transparent 72%), radial-gradient(60% 40% at 60% 20%, rgba(66, 10, 104, 0.3), transparent 72%), var(--ink-1);
+}
+.hon-shot { position: relative; display: block; }
+.hon-shot picture, .hon-shot img { display: block; width: 100%; height: auto; }
+.hon-shot img { -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
+.hon-box { position: absolute; left: var(--x0); top: var(--y0); right: calc(100% - var(--x1)); bottom: calc(100% - var(--y1)); border: 1.5px solid var(--sig); box-shadow: 0 0 0 1px var(--keyline); pointer-events: none; }
+.hon-box b {
+  position: absolute; left: -1.5px; bottom: calc(100% + 1px);
+  padding: 5px 8px 4px; background: var(--sig); color: var(--sig-ink);
+  font: 400 12px/1 var(--f-mono); font-stretch: 87.5%; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap;
+}
+.hon-fig figcaption { margin-top: 12px; font-size: 16px; line-height: 1.4; }
+.hon-cap { display: block; margin-bottom: 6px; text-wrap: pretty; } /* the link on a line of its own, so its words can change without moving anything */
+.hon-go { color: var(--paper); }
+.hon-go::before { content: ""; position: absolute; inset: 0; z-index: 3; } /* the whole figure opens it */
+.hon-go::after { content: " ↓"; content: " ↓" / ""; color: var(--sig); }
+.say-3d, .r3d-pinnable .say-still { display: none; }
+.r3d-pinnable .say-3d { display: inline; }
+.r3d-off .say-3d { display: none; } .r3d-off .say-still { display: inline; } /* 3D refused or failed: stages.js sets html.r3d-off */
+@media (hover: hover) {
+  .hon-fig:hover .fi { outline: 1.5px solid var(--sig); outline-offset: -1.5px; }
+  .hon-fig:hover .hon-go { text-decoration-color: var(--sig); }
+}
+.hon-fig:has(.hon-go:focus-visible) .fi { outline: 2px solid var(--sig); outline-offset: -2px; }
+@media (max-width: 899px) {
+  .hon-fig { display: grid; grid-template-columns: clamp(124px, 34vw, 176px) minmax(0, 1fr); column-gap: 18px; align-items: center; margin-top: 30px; }
+  .hon-fig .fm { display: none; }
+  .hon-fig .fi { padding-top: 26px; }
+  .hon-fig figcaption { margin-top: 0; }
+  .hon-box b { padding: 4px 6px 3px; font-size: 11px; letter-spacing: 0.02em; }
+}
+@media (min-width: 900px) {
+  .hon-grid { display: grid; grid-template-columns: minmax(0, 1fr) clamp(200px, 22vw, 240px); column-gap: 40px; align-items: start; }
+  .hon-fig figcaption { font-size: 15px; }
+}
+/* 900–1099px (one honor a row): the honors share their rows with the grid (subgrid), so the teaser
+   can start on the World Finalist line, the second row, not beside #1 Autonomous Skills (another
+   season, another robot). It spans the rows after it, so it never stretches them. */
+@media (min-width: 900px) and (max-width: 1099px) {
+  .hon-grid { grid-template-rows: repeat(6, auto); }
+  .hon-grid .credits { grid-column: 1; grid-row: 1 / 7; display: grid; grid-template-rows: subgrid; }
+  .hon-fig { grid-column: 2; grid-row: 2 / 7; }
+}
+@media (min-width: 1100px) {
+  .hon-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; }
+  .hon-grid .credits { grid-column: 1 / 10; }
+  .hon-fig { grid-column: 10 / 13; }
+  .hon-shot { width: 88%; margin: 0 auto; } /* a little under the column, so the whole figure ends level with the list */
 }
 
 /* ---------- 7. Projects (03) ---------- */
@@ -1201,17 +1263,20 @@ html:not(.motion-ok) .r3d-motion { display: none; }
 
 /* ---------- 11. The contact strip & the Dome ---------- */
 /* Justified rows: each photo's flex share is its aspect ratio, so the photos in a row end up the
-   same height and nothing is cropped. Sized for the four frames: two rows of two below 900px, one
-   row from 900px, each row filling the measure. (Adding photos: check the rows, and if a short last
-   row would stretch, add back a filler, .strip-photos::after { content: ""; flex: 10000 1 0px; }.) */
+   same height and nothing is cropped. Sized for the three frames: on phones (below 700px) the
+   first takes the whole row and the other two share the next; from 700px one row of three, each
+   row filling the measure. (Adding photos: check the rows, and if a short last row would stretch,
+   add back a filler, .strip-photos::after { content: ""; flex: 10000 1 0px; }.) */
 .strip-photos { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 30px 14px; }
 .strip-photos > li { flex: calc(var(--ar) * 100) 1 calc(var(--ar) * 25vw); }
+.strip-photos > li:first-child { flex-basis: 100%; }
 .strip-photos .fi { aspect-ratio: var(--ar); }
 .strip-photos .fi img { height: 100%; object-fit: cover; }
 .strip-photos .fm span:first-child { color: var(--muted); }
 .strip-photos figcaption { margin-top: 10px; }
-/* Wide: one row of four, so the Dome arrives sooner. */
-@media (min-width: 900px) { .strip-photos { gap: 26px 12px; } .strip-photos > li { flex-basis: calc(var(--ar) * min(12vw, 180px)); } }
+/* Tablets and wide: one row of three, so the Dome arrives sooner. */
+@media (min-width: 700px) { .strip-photos > li, .strip-photos > li:first-child { flex-basis: calc(var(--ar) * min(12vw, 180px)); } }
+@media (min-width: 900px) { .strip-photos { gap: 26px 12px; } }
 
 /* Worlds 2026: the Dome, the chapter's last frame. Never wider than its 1200px file; full bleed
    below that, cropped to a widescreen band from 900px up. */
@@ -1339,8 +1404,13 @@ html:not(.motion-ok) .r3d-motion { display: none; }
 /* 02 (Honors): the detector switches on (box snaps from a loose dashed guess, then its tag, then the features). */
 .anim .v-detect .giant-w::before { opacity: 0; transform: translate(3%, -6%) scale(1.09); border-style: dashed; }
 .anim .v-detect .dtag { opacity: 0; }
-.anim .v-detect .giant.is-in .giant-w::before { opacity: 1; transform: none; border-style: solid; transition: opacity 0.3s 0.45s, transform 0.65s 0.45s var(--ease), border-style 0s 0.95s; }
+.anim .v-detect .giant.is-in .giant-w::before { opacity: 1; transform: none; border-style: solid; transition: opacity 0.3s 0.45s, transform 0.65s 0.45s var(--ease), border-style 0s 0.95s allow-discrete; }
 .anim .v-detect .giant.is-in .dtag { opacity: 1; transition: opacity 0.2s 1s; }
+/* and the same on the robot teaser beside the honors: its box snaps on, then its tag */
+.anim .hon-fig:not(.is-in) .hon-box { opacity: 0; transform: translate(3%, -3%) scale(1.06); border-style: dashed; }
+.anim .hon-fig:not(.is-in) .hon-box b { opacity: 0; }
+.anim .hon-fig.is-in .hon-box { transition: opacity 0.3s calc(var(--d, 0s) + 0.45s), transform 0.65s calc(var(--d, 0s) + 0.45s) var(--ease), border-style 0s calc(var(--d, 0s) + 0.95s) allow-discrete; }
+.anim .hon-fig.is-in .hon-box b { transition: opacity 0.2s calc(var(--d, 0s) + 1s); }
 .anim .feat circle { opacity: 0; transition: opacity 0.25s; }
 .anim .is-in .feat circle { opacity: 1; transition-delay: calc(1.1s + var(--d, 0s)); }
 /* 05: slightly soft, a channel misregistered, glare at the top edge and sensor noise; all clear
@@ -1558,13 +1628,18 @@ html:not(.motion-ok) .r3d-motion { display: none; }
   .r3d-view { height: auto !important; flex: none !important; container-type: normal; } /* (also when the screen had it pinned) */
   .r3d-frame { position: relative !important; left: auto; top: auto; transform: none !important; width: 60mm !important; opacity: 1 !important; background: #0a0a0b !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .r3d-as, .r3d-as img { position: static !important; max-width: 100% !important; }
-  /* the screenshots on paper: no mat marks; the experience figures small, the robot's on its dark ground */
+  /* the screenshots on paper: no mat marks; the experience figures small; the honors' robot
+     teaser small, on its dark ground, without its box or its link (nothing to jump to on paper) */
   .ui-shot .fi::before { display: none !important; }
   .ui-shot .fi { padding: 0 !important; }
   .ui-shot img { max-width: 100% !important; }
   .xp-fig { --fh: 28mm; }
   .xp-fig .fi img { max-width: none !important; height: 100% !important; }
-  .xp-robot .fi { background: #0a0a0b !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .hon-grid { display: block !important; }
+  .hon-fig { display: block !important; width: 36mm; margin: 10pt 0 0 !important; }
+  .hon-fig .fi { padding: 0 !important; background: #0a0a0b !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .hon-shot img { max-width: 100% !important; }
+  .hon-box, .hon-go { display: none !important; }
   /* the class tags (Honors, Experience) and the key photos' focus hunt wait for a reveal on screen:
      on paper they're shown, the tags in grey (lime would vanish on white) */
   .cls { opacity: 1 !important; transform: none !important; transition: none !important; border-color: #999 !important; }
